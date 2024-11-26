@@ -3,12 +3,15 @@ import { Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import HomePage from "./pages/HomePage"
 import AdminPage from "./pages/AdminPage"
-import UsersPage from "./pages/UsersPage"
-import CreateUserPage from "./pages/CreateUserPage"
-import InstitutesPage from "./pages/InstitutesPage"
-import CreateIstitutePage from "./pages/CreateIstitutePage"
-import EditUserPage from "./pages/EditUserPage"
-import EditInstitutePage from "./pages/EditInstitutePage"
+import UsersPage from "./pages/Users/UsersPage"
+import CreateUserPage from "./pages/Users/CreateUserPage"
+import InstitutesPage from "./pages/Institutes/InstitutesPage"
+import CreateIstitutePage from "./pages/Institutes/CreateIstitutePage"
+import EditUserPage from "./pages/Users/EditUserPage"
+import EditInstitutePage from "./pages/Institutes/EditInstitutePage"
+import CoursesPage from "./pages/Courses/CoursesPage"
+import CreateCoursePage from "./pages/Courses/CreateCoursePage"
+import EditCoursePage from "./pages/Courses/EditCoursePage"
 
 
 const queryClient = new QueryClient()
@@ -23,11 +26,15 @@ function App() {
 
           <Route path="/admin/users" element={<UsersPage />} />
           <Route path="/admin/users/create" element={<CreateUserPage />} />
-          <Route path="/admin/users/:id" element={<EditUserPage />} />
+          <Route path="/admin/users/edit/:id" element={<EditUserPage />} />
 
           <Route path="/admin/institutes" element={<InstitutesPage />} />
           <Route path="/admin/institutes/create" element={<CreateIstitutePage />} />
-          <Route path="/admin/institutes/:id" element={<EditInstitutePage />} />
+          <Route path="/admin/institutes/edit/:id" element={<EditInstitutePage />} />
+
+          <Route path="/admin/courses/:id" element={<CoursesPage />} />
+          <Route path="/admin/courses/create" element={<CreateCoursePage />} />
+          <Route path="/admin/courses/edit/:id" element={<EditCoursePage />} />
         </Route>
       </Routes>
     </QueryClientProvider>
