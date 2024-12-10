@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { useLocation, useNavigate } from 'react-router-dom';
 import keyVisual from '../../assets/KeyVisual.png'
 import { AuthService } from '../../services/authService';
+import { UserService } from '../../services/userService';
+import { LocalStorageService } from '../../lib/helpers/localStorageService';
 
 const loginSchema = z.object({
   username: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -21,7 +23,17 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
 
   const onSubmit = async (data: TLoginSchema) => {
     await AuthService.login(data);
-    navigate('/admin', { state: { from: location }, replace: true });
+    // 3.14 here
+    const users = await UserService.getAll();
+    const user = users.filter(x => x.username == data.username)[0];
+    LocalStorageService.save('user', user)
+    // console.log(LocalStorageService.get('user'));
+    if (user.role == 'admin') {
+      navigate('/admin', { state: { from: location }, replace: true });
+    }
+    if (user.role == 'teacher') {
+      navigate('/teacher', { state: { from: location }, replace: true });
+    }
   }
 
   if (!isVisible) {

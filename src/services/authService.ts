@@ -19,9 +19,8 @@ export type IAuthRefreshRequest = {
 export const AuthService = {
   async login(data: IAuthRequest) {
     const response = await $https.post(`/token/`, data);
-    // console.log(response.data)
     UserSecretStorageService.save(response.data);
-    console.log(UserSecretStorageService.get());
+    return response.data;
   },
 
   async refresh() {

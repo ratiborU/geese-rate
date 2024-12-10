@@ -1,6 +1,6 @@
 // import { IUserResponse } from '../../services/userService';
-import styles from './coursesTable.module.css'
-import CoursesTableRow from './CoursesTableRow';
+import styles from './coursesTeacherTable.module.css'
+import CoursesTableRow from './CoursesTeacherTableRow';
 import { NavLink } from 'react-router-dom';
 import { ICourseResponse } from '../../../services/courseService';
 
@@ -19,7 +19,6 @@ const CoursesTable = (props: { data: ICourseResponse[]; }) => {
           <th className={styles.cell}>Институт</th>
           <th className={styles.cell}>Преподаватель</th>
           <th className={styles.cell}>Расписание</th>
-          <th className={styles.cell}>Рейтинг преподавателя</th>
           <th className={styles.cell}>Рейтинг предмета</th>
         </tr>
       </thead>

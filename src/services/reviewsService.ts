@@ -1,22 +1,24 @@
 import $https from './api';
 
 export type ICourseRequest = {
-  "name": string,
-  "institute": string,
-  "teacher": string,
-  "schedule": string,
+  "user": string,
+  "course": string,
+  "rating": string,
+  "comment": string,
+  "is_anonymous": string,
 };
 
 export type ICourseResponse = {
   "id": string,
-  "name": string,
-  "institute": string,
-  "teacher": string,
-  "schedule": string,
+  "user": string,
+  "course": string,
+  "rating": string,
+  "comment": string,
+  "is_anonymous": string,
 };
 
 
-export const CourseService = {
+export const ReviewService = {
   async create(data: ICourseRequest): Promise<ICourseResponse> {
     const response = await $https.post(`/courses/`, data);
     return response.data;

@@ -1,23 +1,25 @@
 // import { IInstituteResponse } from '../../services/instituteService';
-import { ICourseResponse } from '../../../services/courseService';
-import styles from './coursesTable.module.css'
+// import { ICourseResponse } from '../../../services/courseService';
+import styles from './couplesTable.module.css'
 import { NavLink } from 'react-router-dom';
 // import { CourseService } from '../../../services/courseService';
 import { UserService } from '../../../services/userService';
-import { InstituteService } from '../../../services/instituteService';
+// import { InstituteService } from '../../../services/instituteService';
 import { useQuery } from '@tanstack/react-query';
+import { ICoupleResponse } from '../../../services/coupleService';
+import { CourseService } from '../../../services/courseService';
 
-const CoursesTableRow = (props: { row: ICourseResponse; }) => {
+const CoursesTableRow = (props: { row: ICoupleResponse; }) => {
   const { row } = props;
 
   const { data, isLoading, error } = useQuery({
     queryFn: async () => {
+      const course = await CourseService.getOne(Number(row.course));
       const user = await UserService.getOne(Number(row.teacher));
-      const institute = await InstituteService.getOne(Number(row.institute));
-      return { user, institute }
-
+      // const institute = await InstituteService.getOne(Number(row.institute));
+      return { course, user }
     },
-    queryKey: ["coursesData", row.teacher, row.institute],
+    queryKey: ["coupleRow", row.course, row.teacher],
     // staleTime: Infinity,
   });
 
@@ -35,15 +37,12 @@ const CoursesTableRow = (props: { row: ICourseResponse; }) => {
         <NavLink className={styles.link} to={`/admin/courses/edit/${row.id}`} >Редактировать</NavLink>
       </th>
       <th className={styles.cell}>{row.id}</th>
-      <th className={styles.cell}>{row.name}</th>
-      <th className={styles.cell}>{data.institute.name}</th>
+      <th className={styles.cell}>{data.course.name}</th>
       <th className={styles.cell}>{data.user.first_name} {data.user.last_name}</th>
-      <th className={styles.cell}>{row.schedule}</th>
+      <th className={styles.cell}>{row.date}</th>
+      <th className={styles.cell}>{row.status}</th>
       <th className={styles.cell}>
-        <NavLink className={styles.link} to={`/admin/courses/teacher/${row.teacher}`} >Перейти</NavLink>
-      </th>
-      <th className={styles.cell}>
-        <NavLink className={styles.link} to={`/admin/couples/${row.id}`} >Перейти</NavLink>
+        <NavLink className={styles.link} to={`/teacher/qr/${row.id}`} >Перейти QR</NavLink>
       </th>
     </tr>
   );

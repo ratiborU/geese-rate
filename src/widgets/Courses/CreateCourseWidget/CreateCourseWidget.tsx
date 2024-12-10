@@ -28,7 +28,7 @@ const CreateCourseWidget = () => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Создать институт</h1>
+      <h1 className={styles.title}>Создать предмет</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register('name')}

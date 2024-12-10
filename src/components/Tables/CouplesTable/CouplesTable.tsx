@@ -1,10 +1,11 @@
 // import { IUserResponse } from '../../services/userService';
-import styles from './coursesTable.module.css'
-import CoursesTableRow from './CoursesTableRow';
+import styles from './couplesTable.module.css'
+import CoursesTableRow from './CouplesTableRow';
 import { NavLink } from 'react-router-dom';
-import { ICourseResponse } from '../../../services/courseService';
+// import { ICourseResponse } from '../../../services/courseService';
+import { ICoupleResponse } from '../../../services/coupleService';
 
-const CoursesTable = (props: { data: ICourseResponse[]; }) => {
+const CoursesTable = (props: { data: ICoupleResponse[]; }) => {
   const { data } = props;
 
   return (
@@ -16,16 +17,15 @@ const CoursesTable = (props: { data: ICourseResponse[]; }) => {
           </th>
           <th className={styles.cell}>id</th>
           <th className={styles.cell}>Название</th>
-          <th className={styles.cell}>Институт</th>
           <th className={styles.cell}>Преподаватель</th>
-          <th className={styles.cell}>Расписание</th>
-          <th className={styles.cell}>Рейтинг преподавателя</th>
-          <th className={styles.cell}>Рейтинг предмета</th>
+          <th className={styles.cell}>Дата</th>
+          <th className={styles.cell}>Статус</th>
+          <th className={styles.cell}>Ссылка QR</th>
         </tr>
       </thead>
       <tbody>
         {/* {...data.map(x => <CoursesTableRow key={x.id} row={x} />)} */}
-        {...data.sort((a: ICourseResponse, b: ICourseResponse) => Number(a.id) - Number(b.id)).map(x => <CoursesTableRow key={x.id} row={x} />)}
+        {...data.sort((a: ICoupleResponse, b: ICoupleResponse) => Number(a.id) - Number(b.id)).map(x => <CoursesTableRow key={x.id} row={x} />)}
       </tbody>
     </table>
   );

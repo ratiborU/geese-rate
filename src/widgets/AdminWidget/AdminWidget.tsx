@@ -27,6 +27,7 @@ const AdminWidget = () => {
           <NavLink to={`/admin/users`}><button className={styles.button}>Просмотр пользователей</button></NavLink>
           <NavLink to={`/admin/users/create`}><button className={styles.button}>Создать пользователя</button></NavLink>
           <NavLink to={`/admin/users`}><button className={styles.button}>Просмотр предметов</button></NavLink>
+          {/* <NavLink to={`/teacher`}><button className={styles.button}>Страница препода</button></NavLink> */}
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Редактировать институт</h1>
+      <h1 className={styles.title}>Редактировать Предмет</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register('name')}

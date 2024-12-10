@@ -3,9 +3,8 @@ import CoursesTable from "../../../components/Tables/CursesTable/CursesTable";
 import { ICourseResponse } from "../../../services/courseService";
 // import { NavLink } from "react-router-dom";
 
-const CoursesWidget = (props: { id: string, data: ICourseResponse[]; }) => {
-  const { id, data } = props
-  const coursesData = data.filter((course) => course.institute == id);
+const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
+  const { data } = props
   // не нравится структура проекта, 
   // зпросы долдны находиться в page
   // const { data, isLoading, error } = useQuery({
@@ -24,7 +23,7 @@ const CoursesWidget = (props: { id: string, data: ICourseResponse[]; }) => {
 
   return (
     <>
-      <CoursesTable data={coursesData} />
+      <CoursesTable data={data} />
       {/* <NavLink to={`/admin/institutes/create`}>Добавить институт</NavLink> */}
     </>
 

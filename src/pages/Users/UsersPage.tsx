@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { UserService } from '../../services/userService';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
-
+import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 
 const UsersPage = () => {
   const { data, isLoading, error } = useQuery({
@@ -20,6 +20,7 @@ const UsersPage = () => {
 
   return (
     <div>
+      <TitleWidget title='Пользователи' description='' />
       <UsersTable data={data} />
     </div>
   );
