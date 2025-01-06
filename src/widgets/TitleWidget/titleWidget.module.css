@@ -1,5 +1,21 @@
 .title {
-  font-size: 40px;
-  margin-top: 40px;
-  margin-left: 120px;
+  font-size: 100px;
+  margin-top: 90px;
+  margin-left: 250px;
+  font-weight: 800;
+  color: #222222;
+}
+
+.description {
+  margin-left: 250px;
+  font-size: 25px;
+  margin-bottom: 64px;
+  font-weight: 300;
+  color: #222222;
+}
+
+.image {
+  position: absolute;
+  top: 75px;
+  right: 0;
 }

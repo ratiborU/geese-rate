@@ -20,7 +20,7 @@ const UsersPage = () => {
 
   return (
     <div>
-      <TitleWidget title='Пользователи' description='' />
+      <TitleWidget title='Пользователи' description='Выберите нужного пользователя для редактирвоания' />
       <UsersTable data={data} />
     </div>
   );

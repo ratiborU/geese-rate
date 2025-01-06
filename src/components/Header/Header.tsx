@@ -21,6 +21,12 @@ const Header = () => {
               <img className={styles.arrowDown} src={arrowDown} alt="" />
             </button>
           </NavLink>
+          <NavLink to='/teacher' >
+            <button className={styles.button}>
+              <span className={styles.buttonText}>Преподаватель</span>
+              <img className={styles.arrowDown} src={arrowDown} alt="" />
+            </button>
+          </NavLink>
 
         </nav>
       </div>

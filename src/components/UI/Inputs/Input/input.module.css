@@ -1,0 +1,28 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 110%;
+  color: #222;
+}
+
+.input {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 110%;
+  color: #222222;
+  border-radius: 15px;
+  width: 430px;
+  height: 68px;
+  background: #ebebeb;
+  padding-left: 30px;
+}
+
+.input::placeholder {
+  color: #B7B7B7;
+}

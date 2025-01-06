@@ -8,6 +8,8 @@ import CouplesWidget from "../widgets/Couples/CouplesWidget/CouplesWidget";
 import { CoupleService } from "../services/coupleService";
 import TitleWidget from "../widgets/TitleWidget/TitleWidget";
 
+// import CoursesWidget from "../widgets/Courses/CoursesWidget/CoursesWidget";
+
 const TeacherPage = () => {
   const teacher: IUserResponse = LocalStorageService.get('user')!;
   const { data: coursesData, isLoading: coursesIsLoading, error: coursesError } = useQuery({
@@ -46,6 +48,7 @@ const TeacherPage = () => {
       {/* <CoursesWidget data={coursesData} /> */}
       <TitleWidget title='Добро пожаловать' description='' />
       <CouplesWidget data={couplesData} />
+      <CoursesWidget data={coursesData} />
     </div>
   );
 };

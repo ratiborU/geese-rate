@@ -1,11 +1,12 @@
 // import { IUserResponse } from '../../services/userService';
 import styles from './couplesTable.module.css'
-import CoursesTableRow from './CouplesTableRow';
+// import Couples from './CouplesTableRow';
+import CouplesReviewListTableRow from './CouplesReviewListTableRow';
 import { NavLink } from 'react-router-dom';
 // import { ICourseResponse } from '../../../services/courseService';
 import { ICoupleResponse } from '../../../services/coupleService';
 
-const CoursesTable = (props: { data: ICoupleResponse[]; }) => {
+const CouplesReviewListTable = (props: { data: ICoupleResponse[]; }) => {
   const { data } = props;
 
   return (
@@ -16,19 +17,17 @@ const CoursesTable = (props: { data: ICoupleResponse[]; }) => {
             <NavLink className={styles.link} to={`/admin/couples/create`}>Добавить</NavLink>
           </th>
           <th className={styles.cell}>id</th>
-          <th className={styles.cell}>Название</th>
-          <th className={styles.cell}>Преподаватель</th>
-          <th className={styles.cell}>Дата</th>
-          <th className={styles.cell}>Статус</th>
-          <th className={styles.cell}>Ссылка QR</th>
+          <th className={styles.cell}>ФИО</th>
+          <th className={styles.cell}>Оценка</th>
+          <th className={styles.cell}>Отзыв</th>
         </tr>
       </thead>
       <tbody>
         {/* {...data.map(x => <CoursesTableRow key={x.id} row={x} />)} */}
-        {...data.sort((a: ICoupleResponse, b: ICoupleResponse) => Number(a.id) - Number(b.id)).map(x => <CoursesTableRow key={x.id} row={x} />)}
+        {...data.sort((a: ICoupleResponse, b: ICoupleResponse) => Number(a.id) - Number(b.id)).map(x => <CouplesReviewListTableRow key={x.id} row={x} />)}
       </tbody>
     </table>
   );
 };
 
-export default CoursesTable;
+export default CouplesReviewListTable;

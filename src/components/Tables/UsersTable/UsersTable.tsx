@@ -10,6 +10,7 @@ const UsersTable = (props: { data: IUserResponse[]; }) => {
       <thead className={styles.thead}>
         <tr className={styles.headerLine}>
           <th className={styles.headerCell}></th>
+          <th className={styles.headerCell}>Редактировать</th>
           <th className={styles.headerCell}>id</th>
           <th className={styles.headerCell}>Имя</th>
           <th className={styles.headerCell}>Фамилия</th>

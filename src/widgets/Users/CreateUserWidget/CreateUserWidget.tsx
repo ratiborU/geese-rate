@@ -4,6 +4,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { useQueryClient } from '@tanstack/react-query';
 import { IUserRequest, UserService } from '../../../services/userService';
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
+import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Inputs/Input/Input';
+import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 
 
 const createUserSchema = z.object({
@@ -36,46 +40,65 @@ const CreateUserWidget = () => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Создать пользователя</h1>
+      {/* <h1 className={styles.title}>Создать пользователя</h1> */}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('first_name')}
-          className={styles.input}
-          type="text"
-          placeholder='Имя'
+        <Input
+          label='ФИО'
+          inputProps={{
+            id: 'create-user-first_name',
+            ...register('first_name'),
+            className: styles.input,
+            type: "text",
+            placeholder: 'Введите ФИО...',
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('last_name')}
-          className={styles.input}
-          type="text"
-          placeholder='Фамилия'
+
+        <Input
+          label='Логин'
+          inputProps={{
+            id: 'create-user-username',
+            ...register('username'),
+            className: styles.input,
+            type: "text",
+            placeholder: 'Введите логин...',
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('username')}
-          className={styles.input}
-          type="text"
-          placeholder='username'
+
+        <Input
+          label='Пароль'
+          inputProps={{
+            id: 'create-user-password',
+            ...register('password'),
+            className: styles.input,
+            type: "password",
+            placeholder: 'Введите пароль...',
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('email')}
-          className={styles.input}
-          type="text"
-          placeholder='Логин'
-        />
-        <input
-          {...register('password')}
-          className={styles.input}
-          type="text"
-          placeholder='пароль'
-        />
-        <input
-          {...register('role')}
-          className={styles.input}
-          type="text"
-          placeholder='роль'
-        />
-        <button className={styles.button} type='submit'>Создать</button>
+        <SelectInput label='Роль' />
+
+        {/* <Input
+          label='Роль'
+          inputProps={{
+            id: 'create-user-role',
+            ...register('role'),
+            className: styles.input,
+            type: "text",
+            placeholder: 'Выберите роль...',
+            autoComplete: "new-password"
+          }}
+        /> */}
+
+        <Button
+          text='Создать'
+          width={320}
+          buttonProps={{
+            type: 'submit'
+          }} />
       </form>
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

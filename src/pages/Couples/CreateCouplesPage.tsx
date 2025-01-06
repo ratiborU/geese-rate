@@ -1,8 +1,8 @@
+import CreateCouplesWidget from "../../widgets/Couples/CreateCoupleWidget/CreateCoupleWidget";
+
 const CreateCouplesPage = () => {
   return (
-    <div>
-      Создать пару
-    </div>
+    <CreateCouplesWidget />
   );
 };
 
