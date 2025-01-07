@@ -1,6 +1,8 @@
 // import { useQuery } from "@tanstack/react-query";
-import CoursesTable from "../../../components/Tables/CursesTable/CursesTable";
+// import CoursesTable from "../../../components/Tables/CursesTable/CursesTable";
 import { ICourseResponse } from "../../../services/courseService";
+import Table from "../../../components/UI/Table/Table";
+import { tableName, headerLabels, keys, renderCels } from "./CoursesWidgetColumnsData";
 // import { NavLink } from "react-router-dom";
 
 const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
@@ -23,7 +25,14 @@ const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
 
   return (
     <>
-      <CoursesTable data={data} />
+      <Table
+        headerLabels={headerLabels}
+        tableName={tableName}
+        renderCels={renderCels}
+        data={data}
+        keys={keys}
+      />
+      {/* <CoursesTable data={data} /> */}
       {/* <NavLink to={`/admin/institutes/create`}>Добавить институт</NavLink> */}
     </>
 

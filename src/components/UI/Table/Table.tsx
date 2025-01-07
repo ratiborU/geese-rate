@@ -24,10 +24,14 @@ const Table = (props: TableProps) => {
         </tr>
       </thead>
       <tbody>
-        {/* <TableRow/> */}
         {...data.sort((a: any, b: any) => Number(a.id) - Number(b.id))
           .map((x: any) =>
-            <TableRow key={x.id} row={x} renderCels={renderCels} keys={keys} />
+            <TableRow
+              key={`${tableName} row ${x.id}`} row={x}
+              renderCels={renderCels}
+              keys={keys}
+              tableName={tableName}
+            />
           )
         }
       </tbody>

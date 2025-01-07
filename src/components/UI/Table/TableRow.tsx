@@ -6,6 +6,7 @@ type TableHeaderRowProps = {
   keys: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   row?: any,
+  tableName: string,
 }
 
 const TableRow = (props: TableHeaderRowProps) => {

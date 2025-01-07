@@ -7,6 +7,7 @@ import { CoupleService } from "../../services/coupleService";
 // import CouplesWidget from "../../widgets/Couples/CouplesWidget/CouplesWidget";
 import CoursesRatingWidget from "../../widgets/Couples/CouplesRatingWidget/CouplesRatingWidget";
 import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
+import image from '../../assets/institute.png'
 
 const CouplesPage = () => {
   const { id } = useParams();
@@ -31,7 +32,11 @@ const CouplesPage = () => {
   return (
     <div>
       {/* <UsersTable data={data} /> */}
-      <TitleWidget title={`Пары `} description='' />
+      <TitleWidget
+        title={`Пары`}
+        description='Выберите нужную пару'
+        image={image}
+      />
       <CoursesRatingWidget data={data} />
     </div>
   );

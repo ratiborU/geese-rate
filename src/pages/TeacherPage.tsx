@@ -1,5 +1,5 @@
 // import { useParams } from "react-router-dom";
-import CoursesWidget from "../widgets/Courses/CoursesWidget/CoursesWidget";
+// import CoursesWidget from "../widgets/Courses/CoursesWidget/CoursesWidget";
 import { useQuery } from "@tanstack/react-query";
 import { CourseService } from "../services/courseService";
 import { LocalStorageService } from "../lib/helpers/localStorageService";
@@ -7,6 +7,8 @@ import { IUserResponse } from "../services/userService";
 import CouplesWidget from "../widgets/Couples/CouplesWidget/CouplesWidget";
 import { CoupleService } from "../services/coupleService";
 import TitleWidget from "../widgets/TitleWidget/TitleWidget";
+import image from '../assets/institute people.png'
+import CoursesTeacherWidget from "../widgets/Courses/CoursesTeacherWidget/CoursesTeacherWidget";
 
 // import CoursesWidget from "../widgets/Courses/CoursesWidget/CoursesWidget";
 
@@ -46,9 +48,14 @@ const TeacherPage = () => {
     <div>
       {/* Страница преподавателя */}
       {/* <CoursesWidget data={coursesData} /> */}
-      <TitleWidget title='Добро пожаловать' description='' />
+      <TitleWidget
+        title='Student Voice'
+        description={`Добро пожаловать, ${teacher.first_name}`}
+        image={image}
+      />
+      <CoursesTeacherWidget data={coursesData} />
       <CouplesWidget data={couplesData} />
-      <CoursesWidget data={coursesData} />
+
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { CourseService } from '../../services/courseService';
 import CoursesWidget from '../../widgets/Courses/CoursesWidget/CoursesWidget';
 import { useParams } from 'react-router-dom';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
+import image from '../../assets/institute.png'
 
 
 const CoursesPage = () => {
@@ -28,7 +29,12 @@ const CoursesPage = () => {
   return (
     <div>
       {/* <UsersTable data={data} /> */}
-      <TitleWidget title='Предметы' description='' />
+      <TitleWidget
+        title='Предметы'
+        description='Выберите необходимый вам предмет'
+        image={image}
+      />
+      {/* <TitleWidget title='Предметы' description='Выберите нужный предмет' /> */}
       <CoursesWidget data={data} />
     </div>
   );

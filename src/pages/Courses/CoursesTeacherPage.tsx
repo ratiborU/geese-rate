@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import CoursesTeacherWidget from '../../widgets/Courses/CoursesTeacherWidget/CoursesTeacherWidget';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import { UserService } from '../../services/userService';
+import image from '../../assets/institute.png'
 
 
 const CoursesTeacherPage = () => {
@@ -40,7 +41,12 @@ const CoursesTeacherPage = () => {
   return (
     <div>
       {/* <UsersTable data={data} /> */}
-      <TitleWidget title={`Предметы ${teacher?.first_name} ${teacher?.last_name}`} description='' />
+      <TitleWidget
+        title='Предметы'
+        description={`Предметы преподавателя: ${teacher?.first_name}`}
+        image={image}
+      />
+      {/* <TitleWidget title={`Предметы ${teacher?.first_name} ${teacher?.last_name}`} description='' /> */}
       <CoursesTeacherWidget data={data} />
     </div>
   );

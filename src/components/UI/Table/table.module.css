@@ -48,6 +48,7 @@
 
 .headerCell:first-child {
   padding: 0;
+  width: 0;
 }
 
 .headerCell::after {
