@@ -83,3 +83,7 @@
   z-index: -1;
   /* width: 42%; */
 }
+
+.inputNone {
+  display: none;
+}

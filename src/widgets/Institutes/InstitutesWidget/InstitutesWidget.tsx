@@ -3,6 +3,10 @@ import { InstituteService } from "../../../services/instituteService";
 // import InstitutesTable from "../../../components/Tables/InstitutesTable/InstitutesTable";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, keys, renderCels } from "./InstitutesWidgetColumnsData";
+import Button from "../../../components/UI/Button/Button";
+// import LinkButton from "../../../components/UI/LinkButton/LinkButton";
+
+import styles from './institutesWidget.module.css'
 
 const InstitutesWidget = () => {
   // const tableName = 'Institutes';
@@ -39,6 +43,7 @@ const InstitutesWidget = () => {
   return (
     <>
       {/* <InstitutesTable data={data} /> */}
+      <Button className={styles.button} text={"Добавить институт"} />
       <Table
         headerLabels={headerLabels}
         tableName={tableName}

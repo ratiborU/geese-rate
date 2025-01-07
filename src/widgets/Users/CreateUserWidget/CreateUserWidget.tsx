@@ -12,9 +12,9 @@ import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 
 const createUserSchema = z.object({
   first_name: z.string().min(1, "Это поле обязательно для заполнения"),
-  last_name: z.string().min(1, "Это поле обязательно для заполнения"),
+  last_name: z.string(),
   username: z.string().min(1, "Это поле обязательно для заполнения").max(20, 'Не более 20 символов'),
-  email: z.string().min(1, "Это поле обязательно для заполнения"),
+  email: z.string(),
   role: z.string().min(1, "Это поле обязательно для заполнения"),
   password: z.string().min(1, "Это поле обязательно для заполнения"),
 
@@ -30,11 +30,16 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateUserWidget = () => {
   // const queryClient = useQueryClient();
+  const options = [
+    { value: 'admin', text: 'Администратор' },
+    { value: 'teacher', text: 'Преподаватель' }
+  ]
 
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
   // const { register, handleSubmit, formState: { errors } } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {
+    console.log(data);
     await UserService.create(data as unknown as IUserRequest);
   }
 
@@ -76,7 +81,15 @@ const CreateUserWidget = () => {
             autoComplete: "new-password"
           }}
         />
-        <SelectInput label='Роль' />
+        <input value={'lastname'} className={styles.inputNone} type="text" {...register('last_name')} />
+        <input value={'no@mail.ru'} className={styles.inputNone} type="text" {...register('email')} />
+        <SelectInput
+          label='Роль'
+          selectProps={{
+            ...register('role')
+          }}
+          options={options}
+        />
 
         <Button
           text='Создать'

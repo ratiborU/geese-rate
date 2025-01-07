@@ -14,9 +14,9 @@ import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 const editUserSchema = z.object({
   // id: z.string(),
   first_name: z.string().min(1, "Это поле обязательно для заполнения"),
-  last_name: z.string().min(1, "Это поле обязательно для заполнения"),
+  last_name: z.string(),
   username: z.string().min(1, "Это поле обязательно для заполнения").max(20, 'Не более 20 символов'),
-  email: z.string().min(1, "Это поле обязательно для заполнения"),
+  email: z.string(),
   role: z.string().min(1, "Это поле обязательно для заполнения"),
   password: z.string().min(1, "Это поле обязательно для заполнения"),
 
@@ -26,6 +26,10 @@ type TEditUserSchema = z.infer<typeof editUserSchema>;
 
 const EditUserWidjet = (props: { data: IUserResponse; }) => {
   const { data } = props;
+  const options = [
+    { value: 'admin', text: 'Администратор' },
+    { value: 'teacher', text: 'Преподаватель' }
+  ]
   // const queryClient = useQueryClient();
 
   const { register, handleSubmit } = useForm<TEditUserSchema>({ resolver: zodResolver(editUserSchema) });
@@ -62,7 +66,8 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
             className: styles.input,
             type: "text",
             placeholder: 'Введите ФИО...',
-            autoComplete: "new-password"
+            autoComplete: "new-password",
+            defaultValue: data.first_name
           }}
         />
 
@@ -74,7 +79,8 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
             className: styles.input,
             type: "text",
             placeholder: 'Введите логин...',
-            autoComplete: "new-password"
+            autoComplete: "new-password",
+            defaultValue: data.username
           }}
         />
 
@@ -86,10 +92,22 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
             className: styles.input,
             type: "password",
             placeholder: 'Введите пароль...',
-            autoComplete: "new-password"
+            autoComplete: "new-password",
+            defaultValue: data.password
           }}
         />
-        <SelectInput label='Роль' />
+        <input value={'lastname'} className={styles.inputNone} type="text" {...register('last_name')} />
+        <input value={'no@mail.ru'} className={styles.inputNone} type="text" {...register('email')} />
+
+        <SelectInput
+          label='Роль'
+          selectProps={{
+            ...register('role'),
+            defaultValue: data.role
+          }}
+          options={options}
+        />
+
 
         <div className={styles.buttons}>
           <Button
@@ -103,7 +121,7 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
             text='Удалить'
             width={240}
             buttonProps={{
-              type: 'submit',
+              type: 'button',
               onClick: onDelete
             }}
           />

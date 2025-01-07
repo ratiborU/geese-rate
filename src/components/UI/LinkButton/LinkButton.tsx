@@ -7,7 +7,8 @@ type LinkButtonProps = {
   buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>,
   text: string,
   to: string,
-  width?: number
+  width?: number,
+  className?: string,
 }
 
 const LinkButton = (props: LinkButtonProps) => {

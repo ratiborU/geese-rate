@@ -54,7 +54,7 @@ const TeacherPage = () => {
         image={image}
       />
       <CoursesTeacherWidget data={coursesData} />
-      <CouplesWidget data={couplesData} />
+      {/* <CouplesWidget data={couplesData} /> */}
 
     </div>
   );

@@ -1,13 +1,20 @@
 import { SelectHTMLAttributes } from 'react';
 import styles from './selectInput.module.css'
 
+type TOption = {
+  value: string,
+  text: string,
+}
+
 type SelectProps = {
   selectProps?: SelectHTMLAttributes<HTMLSelectElement>,
   label?: string,
+  options: TOption[]
 }
 
+
 const SelectInput = (props: SelectProps) => {
-  const { selectProps, label } = props;
+  const { selectProps, label, options } = props;
   return (
     <div className={styles.field}>
       {label && <label className={styles.label} htmlFor={selectProps?.id}>{label}</label>}
@@ -15,9 +22,10 @@ const SelectInput = (props: SelectProps) => {
         className={styles.select}
         {...selectProps}
       >
-        <option value="">Выберите роль...</option>
-        <option value="admin">Администратор</option>
-        <option value="teacher">Преподаватель</option>
+        <option selected disabled hidden value="">Выберите роль...</option>
+        {...options?.map((x) =>
+          <option selected={selectProps?.defaultValue == x.value} value={x.value}>{x.text}</option>
+        )}
       </select>
     </div>
   );

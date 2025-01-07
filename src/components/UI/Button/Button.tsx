@@ -4,16 +4,17 @@ import styles from './button.module.css'
 
 type ButtonProps = {
   buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>,
+  className?: string,
   text: string,
   width?: number,
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const Button = (props: ButtonProps) => {
-  const { text, width = 300, onClick = () => { }, buttonProps } = props;
+  const { text, width = 300, onClick = () => { }, className, buttonProps } = props;
   return (
     <button
-      className={styles.button}
+      className={`${styles.button} ${className}`}
       onClick={onClick}
       {...buttonProps}
       style={{ width }}>
