@@ -40,7 +40,6 @@ const CreateUserWidget = () => {
 
   return (
     <div className={styles.block}>
-      {/* <h1 className={styles.title}>Создать пользователя</h1> */}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input
           label='ФИО'
@@ -79,24 +78,13 @@ const CreateUserWidget = () => {
         />
         <SelectInput label='Роль' />
 
-        {/* <Input
-          label='Роль'
-          inputProps={{
-            id: 'create-user-role',
-            ...register('role'),
-            className: styles.input,
-            type: "text",
-            placeholder: 'Выберите роль...',
-            autoComplete: "new-password"
-          }}
-        /> */}
-
         <Button
           text='Создать'
           width={320}
           buttonProps={{
             type: 'submit'
-          }} />
+          }}
+        />
       </form>
       <img className={styles.image} src={people} alt="" />
     </div>

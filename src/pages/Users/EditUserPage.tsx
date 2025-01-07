@@ -2,6 +2,7 @@ import EditUserWidjet from '../../widgets/Users/EditUserWidget/EditUserWidget';
 import { useQuery } from '@tanstack/react-query';
 import { UserService } from '../../services/userService';
 import { useParams } from 'react-router-dom';
+import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 
 const EditUserPage = () => {
   const { id } = useParams();
@@ -20,8 +21,14 @@ const EditUserPage = () => {
   }
 
   return (
+    <>
+      <TitleWidget
+        title={'Редактировать пользователя'}
+        description={'Функции администратора'}
+      />
+      <EditUserWidjet data={data} />
+    </>
 
-    <EditUserWidjet data={data} />
   );
 };
 

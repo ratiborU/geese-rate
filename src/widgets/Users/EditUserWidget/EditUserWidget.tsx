@@ -6,6 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 // import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { UserService } from '../../../services/userService';
+import Input from '../../../components/UI/Inputs/Input/Input';
+import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
+import Button from '../../../components/UI/Button/Button';
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
 const editUserSchema = z.object({
   // id: z.string(),
@@ -48,9 +52,64 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Редактировать пользователя</h1>
+      {/* <h1 className={styles.title}>Редактировать пользователя</h1> */}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
+        <Input
+          label='ФИО'
+          inputProps={{
+            id: 'create-user-first_name',
+            ...register('first_name'),
+            className: styles.input,
+            type: "text",
+            placeholder: 'Введите ФИО...',
+            autoComplete: "new-password"
+          }}
+        />
+
+        <Input
+          label='Логин'
+          inputProps={{
+            id: 'create-user-username',
+            ...register('username'),
+            className: styles.input,
+            type: "text",
+            placeholder: 'Введите логин...',
+            autoComplete: "new-password"
+          }}
+        />
+
+        <Input
+          label='Пароль'
+          inputProps={{
+            id: 'create-user-password',
+            ...register('password'),
+            className: styles.input,
+            type: "password",
+            placeholder: 'Введите пароль...',
+            autoComplete: "new-password"
+          }}
+        />
+        <SelectInput label='Роль' />
+
+        <div className={styles.buttons}>
+          <Button
+            text='Сохранить'
+            width={240}
+            buttonProps={{
+              type: 'submit'
+            }}
+          />
+          <Button
+            text='Удалить'
+            width={240}
+            buttonProps={{
+              type: 'submit',
+              onClick: onDelete
+            }}
+          />
+        </div>
+
+        {/* <input
           {...register('first_name')}
           className={styles.input}
           type="text"
@@ -95,9 +154,9 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
         <div className={styles.buttons}>
           <button className={styles.button} type='submit'>Сохранить</button>
           <button className={`${styles.button} ${styles.deleteButton}`} onClick={onDelete}>Удалить</button>
-        </div>
+        </div> */}
       </form>
-
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

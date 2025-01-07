@@ -4,7 +4,10 @@ import CreateUserWidget from '../../widgets/Users/CreateUserWidget/CreateUserWid
 const CreateUserPage = () => {
   return (
     <>
-      <TitleWidget title={'Создать пользователя'} description={'Функции администратора'} />
+      <TitleWidget
+        title={'Создать пользователя'}
+        description={'Функции администратора'}
+      />
       <CreateUserWidget />
     </>
 
