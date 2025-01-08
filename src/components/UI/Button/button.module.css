@@ -6,4 +6,9 @@
   width: 320px;
   height: 80px;
   font-size: 20px;
+  transition: 0.1s ease;
+}
+
+.button:hover {
+  background-color: #0F2B5E;
 }

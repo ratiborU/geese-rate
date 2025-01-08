@@ -51,7 +51,7 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-first_name',
             ...register('first_name'),
-            className: styles.input,
+            // className: styles.input,
             type: "text",
             placeholder: 'Введите ФИО...',
             autoComplete: "new-password"
@@ -63,7 +63,7 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-username',
             ...register('username'),
-            className: styles.input,
+            // className: styles.input,
             type: "text",
             placeholder: 'Введите логин...',
             autoComplete: "new-password"
@@ -75,7 +75,7 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-password',
             ...register('password'),
-            className: styles.input,
+            // className: styles.input,
             type: "password",
             placeholder: 'Введите пароль...',
             autoComplete: "new-password"

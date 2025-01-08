@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { useQueryClient } from '@tanstack/react-query';
 // import { IUserRequest, IUserResponse, UserService } from '../../services/userService';
-
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
+import Input from '../../../components/UI/Inputs/Input/Input';
+import Button from '../../../components/UI/Button/Button';
 import { IInstituteResponse, InstituteService } from '../../../services/instituteService';
 
 
@@ -33,27 +35,56 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Редактировать институт</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('name')}
-          className={styles.input}
-          type="text"
-          placeholder='Название'
-          defaultValue={data.name}
+        <Input
+          label='Название инстиута'
+          inputProps={{
+            id: 'create-institute-name',
+            ...register('name'),
+            type: "text",
+            placeholder: 'Введите название института...',
+            defaultValue: data.name,
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('rating')}
-          className={styles.input}
-          type="text"
-          placeholder='Рейтинг'
-          defaultValue={data.rating}
+        <Input
+          label='Полное название инстиута'
+          inputProps={{
+            id: 'create-institute-fullname',
+            type: "text",
+            placeholder: 'Введите полное название института...',
+            autoComplete: "new-password"
+          }}
         />
+        <Input
+          label='Адрес инстиута'
+          inputProps={{
+            id: 'create-institute-address',
+            type: "text",
+            placeholder: 'Введите адрес института...',
+            autoComplete: "new-password"
+          }}
+        />
+        <input value={'0'} className={styles.inputNone} type="text" {...register('rating')} />
         <div className={styles.buttons}>
-          <button className={styles.button} type='submit'>Сохранить</button>
-          <button className={`${styles.button} ${styles.deleteButton}`} onClick={onDelete}>Удалить</button>
+          <Button
+            text='Сохранить'
+            width={240}
+            buttonProps={{
+              type: 'submit'
+            }}
+          />
+          <Button
+            text='Удалить'
+            width={240}
+            buttonProps={{
+              type: 'button',
+              onClick: onDelete
+            }}
+          />
         </div>
       </form>
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

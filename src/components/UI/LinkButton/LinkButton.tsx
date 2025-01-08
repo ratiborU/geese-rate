@@ -12,11 +12,11 @@ type LinkButtonProps = {
 }
 
 const LinkButton = (props: LinkButtonProps) => {
-  const { text, width = 300, to, buttonProps } = props;
+  const { text, width = 300, to, buttonProps, className } = props;
   return (
     <NavLink className={styles.link} to={to} >
       <button
-        className={styles.button}
+        className={`${styles.button} ${className}`}
         {...buttonProps}
         style={{ width }}
       >

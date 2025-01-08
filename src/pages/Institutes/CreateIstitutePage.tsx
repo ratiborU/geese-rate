@@ -1,8 +1,16 @@
 import CreateInstituteWidget from '../../widgets/Institutes/CreateInstituteWidget/CreateInstituteWidget';
+import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 
 const CreateIstitutePage = () => {
   return (
-    <CreateInstituteWidget />
+    <>
+      <TitleWidget
+        title={'Создать Институт'}
+        description={'Функции администратора'}
+      />
+      <CreateInstituteWidget />
+    </>
+
   );
 };
 
