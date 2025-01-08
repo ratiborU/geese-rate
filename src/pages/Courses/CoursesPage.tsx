@@ -28,13 +28,11 @@ const CoursesPage = () => {
 
   return (
     <div>
-      {/* <UsersTable data={data} /> */}
       <TitleWidget
         title='Предметы'
         description='Выберите необходимый вам предмет'
         image={image}
       />
-      {/* <TitleWidget title='Предметы' description='Выберите нужный предмет' /> */}
       <CoursesWidget data={data} />
     </div>
   );

@@ -27,7 +27,6 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
     const users = await UserService.getAll();
     const user = users.filter(x => x.username == data.username)[0];
     LocalStorageService.save('user', user)
-    // console.log(LocalStorageService.get('user'));
     if (user.role == 'admin') {
       navigate('/admin', { state: { from: location }, replace: true });
     }

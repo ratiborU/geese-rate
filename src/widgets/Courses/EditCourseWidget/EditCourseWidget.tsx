@@ -1,13 +1,16 @@
-// import React from 'react';
 import { z } from 'zod';
 import styles from './editCourseWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
-// import { IUserRequest, IUserResponse, UserService } from '../../services/userService';
-
-// import { InstituteService } from '../../../services/instituteService';
 import { ICourseResponse, CourseService } from '../../../services/courseService';
+import { useQuery } from '@tanstack/react-query';
+import { UserService } from '../../../services/userService';
+import { InstituteService } from '../../../services/instituteService';
+import Input from '../../../components/UI/Inputs/Input/Input';
+import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
+import Button from '../../../components/UI/Button/Button';
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
+
 
 const createUserSchema = z.object({
   name: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -20,9 +23,25 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const EditCourseWidget = (props: { data: ICourseResponse; }) => {
   const { data } = props;
-  // const queryClient = useQueryClient();
-
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
+
+  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
+    queryFn: async () => {
+      const users = await UserService.getAll()
+      return users.map(x => ({ value: x.id, text: x.first_name }));
+    },
+    queryKey: ["userOptions"],
+    staleTime: Infinity,
+  });
+
+  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
+    queryFn: async () => {
+      const users = await InstituteService.getAll()
+      return users.map(x => ({ value: x.id, text: x.name }));
+    },
+    queryKey: ["instituteOptions"],
+    staleTime: Infinity,
+  });
 
   const onSubmit = async (formData: TCreateUserSchema) => {
     await CourseService.update(data.id, formData as unknown as TCreateUserSchema);
@@ -32,43 +51,76 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
     await CourseService.delete(Number(data.id));
   }
 
+  if (usersIsLoading || institutesIsLoading) {
+    return <>Загрузка...</>
+  }
+
+  if (usersError || institutesError || !users || !institutes) {
+    return <>Произошла ошибка</>
+  }
+
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Редактировать Предмет</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('name')}
-          className={styles.input}
-          type="text"
-          placeholder='Название'
-          defaultValue={data.name}
+        <Input
+          label='Название предмета'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('name'),
+            type: "text",
+            placeholder: 'Введите название предмета...',
+            autoComplete: "new-password",
+            defaultValue: data.name
+          }}
         />
-        <input
-          {...register('institute')}
-          className={styles.input}
-          type="text"
-          placeholder='Институт'
-          defaultValue={data.institute}
+        <Input
+          label='Расписание'
+          inputProps={{
+            id: 'create-course-schedule',
+            ...register('schedule'),
+            type: "text",
+            placeholder: 'Вторник 14:30; Четверг 10:15',
+            autoComplete: "new-password",
+            defaultValue: data.schedule
+          }}
         />
-        <input
-          {...register('teacher')}
-          className={styles.input}
-          type="text"
-          placeholder='Преподаватель'
-          defaultValue={data.teacher}
+        <SelectInput
+          label='Институт'
+          text='Выберите институт...'
+          selectProps={{
+            ...register('institute'),
+            defaultValue: data.institute
+          }}
+          options={institutes}
         />
-        <input
-          {...register('schedule')}
-          className={styles.input}
-          type="text"
-          placeholder='Расписание'
-          defaultValue={data.schedule}
+        <SelectInput
+          label='Преподаватель'
+          text='Выберите преподавателя...'
+          selectProps={{
+            ...register('teacher'),
+            defaultValue: data.teacher
+          }}
+          options={users}
         />
         <div className={styles.buttons}>
-          <button className={styles.button} type='submit'>Сохранить</button>
-          <button className={`${styles.button} ${styles.deleteButton}`} onClick={onDelete}>Удалить</button>
+          <Button
+            text='Сохранить'
+            width={240}
+            buttonProps={{
+              type: 'submit'
+            }}
+          />
+          <Button
+            text='Удалить'
+            width={240}
+            buttonProps={{
+              type: 'button',
+              onClick: onDelete
+            }}
+          />
         </div>
       </form>
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

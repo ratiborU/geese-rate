@@ -36,10 +36,8 @@ const CreateUserWidget = () => {
   ]
 
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
-  // const { register, handleSubmit, formState: { errors } } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {
-    console.log(data);
     await UserService.create(data as unknown as IUserRequest);
   }
 

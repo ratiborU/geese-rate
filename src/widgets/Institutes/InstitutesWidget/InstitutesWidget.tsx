@@ -27,7 +27,6 @@ const InstitutesWidget = () => {
 
   return (
     <>
-      {/* <InstitutesTable data={data} /> */}
       <LinkButton className={styles.button} text={"Добавить институт"} to='/admin/institutes/create' />
       <Table
         headerLabels={headerLabels}
@@ -36,7 +35,6 @@ const InstitutesWidget = () => {
         data={data}
         keys={keys}
       />
-      {/* <NavLink to={`/admin/institutes/create`}>Добавить институт</NavLink> */}
     </>
 
   );

@@ -126,53 +126,6 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
             }}
           />
         </div>
-
-        {/* <input
-          {...register('first_name')}
-          className={styles.input}
-          type="text"
-          placeholder='Имя'
-          defaultValue={data.first_name}
-        />
-        <input
-          {...register('last_name')}
-          className={styles.input}
-          type="text"
-          placeholder='Фамилия'
-          defaultValue={data.last_name}
-        />
-        <input
-          {...register('username')}
-          className={styles.input}
-          type="text"
-          placeholder='username'
-          defaultValue={data.username}
-        />
-        <input
-          {...register('email')}
-          className={styles.input}
-          type="text"
-          placeholder='Логин'
-          defaultValue={data.email}
-        />
-        <input
-          {...register('password')}
-          className={styles.input}
-          type="text"
-          placeholder='пароль'
-          defaultValue={data.password}
-        />
-        <input
-          {...register('role')}
-          className={styles.input}
-          type="text"
-          placeholder='роль'
-          defaultValue={data.role}
-        />
-        <div className={styles.buttons}>
-          <button className={styles.button} type='submit'>Сохранить</button>
-          <button className={`${styles.button} ${styles.deleteButton}`} onClick={onDelete}>Удалить</button>
-        </div> */}
       </form>
       <img className={styles.image} src={people} alt="" />
     </div>

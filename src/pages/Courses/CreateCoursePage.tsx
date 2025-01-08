@@ -1,10 +1,15 @@
 import CreateCourseWidget from "../../widgets/Courses/CreateCourseWidget/CreateCourseWidget";
+import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
 
 const CreateCoursePage = () => {
   return (
-    <div>
+    <>
+      <TitleWidget
+        title={'Создать Предмет'}
+        description={'Функции администратора'}
+      />
       <CreateCourseWidget />
-    </div>
+    </>
   );
 };
 

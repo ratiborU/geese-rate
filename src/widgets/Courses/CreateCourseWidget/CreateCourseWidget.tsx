@@ -2,10 +2,14 @@ import { z } from 'zod';
 import styles from './createCourseWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
-
-// import { InstituteService } from '../../../services/instituteService';
 import { CourseService } from '../../../services/courseService';
+import Input from '../../../components/UI/Inputs/Input/Input';
+import Button from '../../../components/UI/Button/Button';
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
+import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
+import { useQuery } from '@tanstack/react-query';
+import { UserService } from '../../../services/userService';
+import { InstituteService } from '../../../services/instituteService';
 
 
 const createUserSchema = z.object({
@@ -18,44 +22,86 @@ const createUserSchema = z.object({
 type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateCourseWidget = () => {
-  // const queryClient = useQueryClient();
-
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
+
+  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
+    queryFn: async () => {
+      const users = await UserService.getAll()
+      return users.map(x => ({ value: x.id, text: x.first_name }));
+    },
+    queryKey: ["userOptions"],
+    staleTime: Infinity,
+  });
+
+  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
+    queryFn: async () => {
+      const users = await InstituteService.getAll()
+      return users.map(x => ({ value: x.id, text: x.name }));
+    },
+    queryKey: ["instituteOptions"],
+    staleTime: Infinity,
+  });
 
   const onSubmit = async (data: TCreateUserSchema) => {
     await CourseService.create(data as unknown as TCreateUserSchema);
   }
 
+  if (usersIsLoading || institutesIsLoading) {
+    return <>Загрузка...</>
+  }
+
+  if (usersError || institutesError || !users || !institutes) {
+    return <>Произошла ошибка</>
+  }
+
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Создать предмет</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('name')}
-          className={styles.input}
-          type="text"
-          placeholder='Название'
+        <Input
+          label='Название предмета'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('name'),
+            type: "text",
+            placeholder: 'Введите название предмета...',
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('institute')}
-          className={styles.input}
-          type="text"
-          placeholder='Институт'
+        <Input
+          label='Расписание'
+          inputProps={{
+            id: 'create-course-schedule',
+            ...register('schedule'),
+            type: "text",
+            placeholder: 'Вторник 14:30; Четверг 10:15',
+            autoComplete: "new-password"
+          }}
         />
-        <input
-          {...register('teacher')}
-          className={styles.input}
-          type="text"
-          placeholder='Преподаватель'
+        <SelectInput
+          label='Институт'
+          text='Выберите институт...'
+          selectProps={{
+            ...register('institute')
+          }}
+          options={institutes}
         />
-        <input
-          {...register('schedule')}
-          className={styles.input}
-          type="text"
-          placeholder='Расписание'
+        <SelectInput
+          label='Преподаватель'
+          text='Выберите преподавателя...'
+          selectProps={{
+            ...register('teacher')
+          }}
+          options={users}
         />
-        <button className={styles.button} type='submit'>Создать</button>
+        <Button
+          text='Создать'
+          width={320}
+          buttonProps={{
+            type: 'submit'
+          }}
+        />
       </form>
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

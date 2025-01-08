@@ -23,7 +23,6 @@ const CoursesTeacherPage = () => {
   const { data: teacher, isLoading: isLoadingTeacher } = useQuery({
     queryFn: async () => {
       const teacher = await UserService.getOne(Number(id))
-      console.log(teacher);
       return teacher;
     },
     queryKey: ["user", id],

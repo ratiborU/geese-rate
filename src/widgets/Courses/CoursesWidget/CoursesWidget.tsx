@@ -3,8 +3,8 @@
 import { ICourseResponse } from "../../../services/courseService";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, keys, renderCels } from "./CoursesWidgetColumnsData";
-// import { NavLink } from "react-router-dom";
-
+import LinkButton from "../../../components/UI/LinkButton/LinkButton";
+import styles from "./coursesWidget.module.css"
 const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
   const { data } = props
   // не нравится структура проекта, 
@@ -25,6 +25,7 @@ const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
 
   return (
     <>
+      <LinkButton className={styles.button} text={"Добавить предмет"} to='/admin/courses/create' />
       <Table
         headerLabels={headerLabels}
         tableName={tableName}
@@ -32,8 +33,6 @@ const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
         data={data}
         keys={keys}
       />
-      {/* <CoursesTable data={data} /> */}
-      {/* <NavLink to={`/admin/institutes/create`}>Добавить институт</NavLink> */}
     </>
 
   );

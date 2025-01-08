@@ -9,12 +9,13 @@ type TOption = {
 type SelectProps = {
   selectProps?: SelectHTMLAttributes<HTMLSelectElement>,
   label?: string,
-  options: TOption[]
+  options: TOption[],
+  text?: string
 }
 
 
 const SelectInput = (props: SelectProps) => {
-  const { selectProps, label, options } = props;
+  const { selectProps, label, options, text = 'Выберите один из вариантов...' } = props;
   return (
     <div className={styles.field}>
       {label && <label className={styles.label} htmlFor={selectProps?.id}>{label}</label>}
@@ -22,7 +23,7 @@ const SelectInput = (props: SelectProps) => {
         className={styles.select}
         {...selectProps}
       >
-        <option selected disabled hidden value="">Выберите роль...</option>
+        <option selected disabled hidden value="">{text}</option>
         {...options?.map((x) =>
           <option selected={selectProps?.defaultValue == x.value} value={x.value}>{x.text}</option>
         )}

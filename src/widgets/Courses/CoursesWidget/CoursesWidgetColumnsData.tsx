@@ -13,7 +13,7 @@ export const headerLabels = [
   'Преподаватель',
   'Расписание',
   'Рейтинг преподавателя',
-  'Рейтинг предмета',
+  'Пары предмета',
 ];
 
 export const keys = ['id', 'name', 'institute', 'teacher', 'schedule', 'teacher', 'id'];
@@ -51,7 +51,7 @@ export const renderCels = [
     if (error) {
       return 'No data'
     }
-    return <>{data?.last_name} {data?.first_name} </>
+    return <>{data?.first_name} </>
   },
   (text: string) => <>{text}</>,
   // (text: string) => <>{text}</>,

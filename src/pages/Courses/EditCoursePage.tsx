@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import EditCourseWidget from "../../widgets/Courses/EditCourseWidget/EditCourseWidget";
 import { useParams } from "react-router-dom";
 import { CourseService } from "../../services/courseService";
+import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
 
 const EditCoursePage = () => {
   const { id } = useParams();
@@ -20,9 +21,13 @@ const EditCoursePage = () => {
   }
 
   return (
-    <div>
+    <>
+      <TitleWidget
+        title={'Редактировать Предмет'}
+        description={'Функции администратора'}
+      />
       <EditCourseWidget data={data} />
-    </div>
+    </>
   );
 };
 
