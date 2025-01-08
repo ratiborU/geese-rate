@@ -1,8 +1,16 @@
 import CreateCouplesWidget from "../../widgets/Couples/CreateCoupleWidget/CreateCoupleWidget";
+import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
 
 const CreateCouplesPage = () => {
   return (
-    <CreateCouplesWidget />
+    <>
+      <TitleWidget
+        title={`Создать пару`}
+        description='Функции администратора'
+      />
+      <CreateCouplesWidget />
+    </>
+
   );
 };
 

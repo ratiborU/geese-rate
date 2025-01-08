@@ -1,8 +1,4 @@
-// import axios from 'axios';
-// import axios from 'axios';
 import $https from './api';
-// import { UserSecretStorageService } from '../lib/helpers/userSecretStorageService.ts';
-// import axios from 'axios';
 
 export type IUserRequest = {
   "password": string,

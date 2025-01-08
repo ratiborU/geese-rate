@@ -1,4 +1,3 @@
-import React from 'react';
 import Table from '../../../components/UI/Table/Table';
 import { IUserResponse } from '../../../services/userService';
 import { tableName, headerLabels, keys, renderCels } from "./UsersWidgetColumnsData";

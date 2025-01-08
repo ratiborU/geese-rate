@@ -3,72 +3,181 @@ import { z } from 'zod';
 import styles from './editCouplesWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
-// import { IUserRequest, IUserResponse, UserService } from '../../services/userService';
+import { CourseService } from '../../../services/courseService';
+import { CoupleService, ICoupleResponse } from '../../../services/coupleService';
+import { useQuery } from '@tanstack/react-query';
+import { UserService } from '../../../services/userService';
+import { InstituteService } from '../../../services/instituteService';
+import Button from '../../../components/UI/Button/Button';
+import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
+import Input from '../../../components/UI/Inputs/Input/Input';
+import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
-// import { InstituteService } from '../../../services/instituteService';
-import { ICourseResponse, CourseService } from '../../../services/courseService';
-
-const createUserSchema = z.object({
-  name: z.string().min(1, "Это поле обязательно для заполнения"),
+const createLessonSchema = z.object({
   institute: z.string().min(1, "Это поле обязательно для заполнения"),
+  course: z.string().min(1, "Это поле обязательно для заполнения"),
   teacher: z.string().min(1, "Это поле обязательно для заполнения"),
-  schedule: z.string().min(1, "Это поле обязательно для заполнения")
+  topic: z.string().min(1, "Это поле обязательно для заполнения"),
+  address: z.string().min(1, "Это поле обязательно для заполнения"),
+  room: z.string().min(1, "Это поле обязательно для заполнения"),
+  date: z.string().min(1, "Это поле обязательно для заполнения"),
+  time: z.string().min(1, "Это поле обязательно для заполнения"),
 })
 
-type TCreateUserSchema = z.infer<typeof createUserSchema>;
+type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
-const EditCouplesWidget = (props: { data: ICourseResponse; }) => {
+const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
   const { data } = props;
-  // const queryClient = useQueryClient();
+  const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
-  const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
+  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
+    queryFn: async () => {
+      const users = await UserService.getAll()
+      return users.map(x => ({ value: x.id, text: x.first_name }));
+    },
+    queryKey: ["userOptions"],
+    staleTime: Infinity,
+  });
 
-  const onSubmit = async (formData: TCreateUserSchema) => {
-    await CourseService.update(data.id, formData as unknown as TCreateUserSchema);
+  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
+    queryFn: async () => {
+      const users = await InstituteService.getAll()
+      return users.map(x => ({ value: x.id, text: x.name }));
+    },
+    queryKey: ["instituteOptions"],
+    staleTime: Infinity,
+  });
+
+  const { data: courses, isLoading: coursesIsLoading, error: coursesError } = useQuery({
+    queryFn: async () => {
+      const users = await CourseService.getAll()
+      return users.map(x => ({ value: x.id, text: x.name }));
+    },
+    queryKey: ["courseOptions"],
+    staleTime: Infinity,
+  });
+
+  const onSubmit = async (data: TCreateLessonSchema) => {
+    console.log(data);
+    await CoupleService.create(data as unknown as TCreateLessonSchema);
   }
 
   const onDelete = async () => {
-    await CourseService.delete(Number(data.id));
+    await CoupleService.delete(Number(data.id));
+  }
+
+  if (usersIsLoading || institutesIsLoading || coursesIsLoading) {
+    return <>Загрузка...</>
+  }
+
+  if (usersError || institutesError || coursesError || !users || !institutes || !courses) {
+    return <>Произошла ошибка</>
   }
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Редактировать пару</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('name')}
-          className={styles.input}
-          type="text"
-          placeholder='Название'
-          defaultValue={data.name}
+        <Input
+          label='Тема пары'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('topic'),
+            type: "text",
+            placeholder: 'Введите название предмета...',
+            autoComplete: "new-password",
+            defaultValue: data.topic,
+          }}
         />
-        <input
-          {...register('teacher')}
-          className={styles.input}
-          type="text"
-          placeholder='Преподаватель'
-          defaultValue={data.teacher}
+        <Input
+          label='Адрес'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('address'),
+            type: "text",
+            placeholder: 'Введите адрес...',
+            autoComplete: "new-password",
+            defaultValue: data.address,
+          }}
         />
-        <input
-          {...register('schedule')}
-          className={styles.input}
-          type="text"
-          placeholder='Дата'
-          defaultValue={data.schedule}
+        <Input
+          label='Аудитория'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('room'),
+            type: "text",
+            placeholder: 'Введите аудиторию...',
+            autoComplete: "new-password",
+            defaultValue: data.room,
+          }}
         />
-        <input
-          {...register('institute')}
-          className={styles.input}
-          type="text"
-          placeholder='Статус'
-          defaultValue={data.institute}
+        <Input
+          label='Дата'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('date'),
+            type: "text",
+            placeholder: 'Введите дату 2025-01-20...',
+            autoComplete: "new-password",
+            defaultValue: data.date,
+          }}
+        />
+        <Input
+          label='Время'
+          inputProps={{
+            id: 'create-course-name',
+            ...register('time'),
+            type: "text",
+            placeholder: 'Введите время 12:00:00...',
+            autoComplete: "new-password",
+            defaultValue: data.time
+          }}
+        />
+        <SelectInput
+          label='Институт'
+          text='Выберите институт...'
+          selectProps={{
+            ...register('institute'),
+            defaultValue: data.institute,
+          }}
+          options={institutes}
+        />
+        <SelectInput
+          label='Предмет'
+          text='Выберите предмет...'
+          selectProps={{
+            ...register('course'),
+            defaultValue: data.course,
+          }}
+          options={courses}
+        />
+        <SelectInput
+          label='Преподаватель'
+          text='Выберите преподавателя...'
+          selectProps={{
+            ...register('teacher'),
+            defaultValue: data.teacher,
+          }}
+          options={users}
         />
         <div className={styles.buttons}>
-          <button className={styles.button} type='submit'>Сохранить</button>
-          <button className={`${styles.button} ${styles.deleteButton}`} onClick={onDelete}>Удалить</button>
+          <Button
+            text='Сохранить'
+            width={240}
+            buttonProps={{
+              type: 'submit'
+            }}
+          />
+          <Button
+            text='Удалить'
+            width={240}
+            buttonProps={{
+              type: 'button',
+              onClick: onDelete
+            }}
+          />
         </div>
       </form>
+      <img className={styles.image} src={people} alt="" />
     </div>
   );
 };

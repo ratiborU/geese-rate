@@ -1,94 +1,56 @@
-// Убрать эту парашу потом
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import $https from './api';
 
 export type ICoupleRequest = {
+  "institute": string,
   "course": string,
+  "teacher": string,
+  "topic": string,
+  "address": string,
+  "room": string,
   "date": string,
-  "status": string,
-  "qr": string,
+  "time": string,
+  // "average_rating": string,
+  // "total_reviews": string,
 };
 
 export type ICoupleResponse = {
   "id": string,
+  "institute": string,
   "course": string,
   "teacher": string,
+  "topic": string,
+  "address": string,
+  "room": string,
   "date": string,
-  "status": string,
-  "qr": string,
+  "time": string,
+  "average_rating": string,
+  "total_reviews": string,
 };
-// <th className={styles.cell}>id</th>
-//           <th className={styles.cell}>Предмет</th>
-//           <th className={styles.cell}>Дата проведения</th>
-//           <th className={styles.cell}>Статус</th>
-//           <th className={styles.cell}>Ссылка на QR</th>
-//           <th className={styles.cell}>Список студентов</th>
-const mockData = {
-  data: [
-    {
-      "id": '1',
-      "course": '1',
-      "teacher": '2',
-      "date": "10.12.2024 - 14:15",
-      "status": "Проведено",
-      "qr": "http://shvbskskdjfhksdjhf",
-    },
-    {
-      "id": '2',
-      "course": '1',
-      "teacher": '2',
-      "date": "12.12.2024 - 14:15",
-      "status": "Идет",
-      "qr": "http://shvbskskdjfhksdjhf",
-    },
-    {
-      "id": '3',
-      "course": '1',
-      "teacher": '2',
-      "date": "17.12.2024 - 14:15",
-      "status": "Запланированно",
-      "qr": "http://shvbskskdjfhksdjhf",
-    },
-    {
-      "id": '4',
-      "course": '1',
-      "teacher": '2',
-      "date": "19.12.2024 - 14:15",
-      "status": "Запланированно",
-      "qr": "http://shvbskskdjfhksdjhf",
-    }
-  ]
-}
 
 
 export const CoupleService = {
   async create(data: ICoupleRequest): Promise<ICoupleResponse> {
-    // const response = await $https.post(`/courses/`, data);
-    const response = mockData;
-    return response.data[1];
+    const response = await $https.post(`/lessons/`, data);
+    return response.data;
   },
 
   async getOne(id: number): Promise<ICoupleResponse> {
-    // const response = await $https.get(`/courses/${id}/`);
-    const response = mockData;
-    return response.data[1];
+    const response = await $https.get(`/lessons/${id}/`);
+    return response.data;
   },
 
   async getAll(): Promise<ICoupleResponse[]> {
-    // const response = await $https.get(`/courses/`);
-    const response = mockData;
+    const response = await $https.get(`/lessons/`);
     return response.data;
   },
 
   async update(id: string, data: ICoupleRequest): Promise<ICoupleResponse> {
-    // const response = await $https.put(`/courses/${id}/`, data);
-    const response = mockData;
-    return response.data[1];
+    const response = await $https.put(`/lessons/${id}/`, data);
+    return response.data;
   },
 
   async delete(id: number) {
-    // const response = await $https.delete(`/courses/${id}/`);
-    const response = mockData;
-    return response.data[1];
+    const response = await $https.delete(`/lessons/${id}/`);
+    return response.data;
   },
 };

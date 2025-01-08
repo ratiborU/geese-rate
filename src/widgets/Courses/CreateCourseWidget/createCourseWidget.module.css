@@ -16,17 +16,14 @@
 
 .buttons {
   display: flex;
-  justify-content: space-between;
-  gap: 60px;
+  gap: 30px;
 }
-
 
 .image {
   position: absolute;
   bottom: 0px;
   right: 140px;
   z-index: -1;
-  /* width: 42%; */
 }
 
 .inputNone {
