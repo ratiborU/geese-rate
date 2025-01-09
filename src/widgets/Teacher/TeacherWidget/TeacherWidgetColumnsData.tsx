@@ -13,11 +13,10 @@ export const headerLabels = [
   'Институт',
   'Преподаватель',
   'Расписание',
-  'Рейтинг преподавателя',
   'Пары предмета',
 ];
 
-// export const keys = ['id', 'name', 'institute', 'teacher', 'schedule', 'teacher', 'id'];
+// export const keys = ['id', 'name', 'institute', 'teacher', 'schedule', 'id'];
 
 export const renderCels = [
   (item: ICourseResponse) => <LinkButton to={`/admin/courses/edit/${item.id}`} text='Редактировать' width={240} />,
@@ -55,6 +54,5 @@ export const renderCels = [
     return <>{data?.first_name} </>
   },
   (item: ICourseResponse) => <>{item.schedule}</>,
-  (item: ICourseResponse) => <LinkButton to={`/admin/courses/teacher/${item.teacher}?institute=${item.institute}`} text='Перейти' width={180} />,
-  (item: ICourseResponse) => <LinkButton to={`/admin/couples/${item.id}?institute=${item.institute}`} text='Перейти' width={180} />
+  (item: ICourseResponse) => <LinkButton to={`/teacher/couples/${item.id}`} text='Перейти' width={180} />
 ];

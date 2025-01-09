@@ -18,7 +18,6 @@ const CoupleTeacherReviewPage = () => {
     queryKey: ["reviewsByLesson", id],
     // staleTime: Infinity,
   });
-  console.log(data);
 
   if (isLoading || !data || !id) {
     return <>Загрузка...</>

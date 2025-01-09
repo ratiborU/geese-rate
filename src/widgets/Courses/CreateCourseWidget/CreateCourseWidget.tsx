@@ -10,6 +10,8 @@ import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import { useQuery } from '@tanstack/react-query';
 import { UserService } from '../../../services/userService';
 import { InstituteService } from '../../../services/instituteService';
+// import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 
 const createUserSchema = z.object({
@@ -22,6 +24,8 @@ const createUserSchema = z.object({
 type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateCourseWidget = () => {
+  // const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -81,15 +85,18 @@ const CreateCourseWidget = () => {
           label='Институт'
           text='Выберите институт...'
           selectProps={{
-            ...register('institute')
+            ...register('institute'),
+            defaultValue: searchParams.get('institute') || ''
           }}
           options={institutes}
+
         />
         <SelectInput
           label='Преподаватель'
           text='Выберите преподавателя...'
           selectProps={{
-            ...register('teacher')
+            ...register('teacher'),
+            defaultValue: searchParams.get('teacher') || ''
           }}
           options={users}
         />

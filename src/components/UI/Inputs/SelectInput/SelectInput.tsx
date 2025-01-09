@@ -21,11 +21,12 @@ const SelectInput = (props: SelectProps) => {
       {label && <label className={styles.label} htmlFor={selectProps?.id}>{label}</label>}
       <select
         className={styles.select}
+        defaultValue={selectProps?.defaultValue || ''}
         {...selectProps}
       >
-        <option selected disabled hidden value="">{text}</option>
+        <option disabled hidden value="">{text}</option>
         {...options?.map((x) =>
-          <option selected={selectProps?.defaultValue == x.value} value={x.value}>{x.text}</option>
+          <option value={x.value}>{x.text}</option>
         )}
       </select>
     </div>

@@ -57,7 +57,6 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
   });
 
   const onSubmit = async (data: TCreateLessonSchema) => {
-    console.log(data);
     await CoupleService.create(data as unknown as TCreateLessonSchema);
   }
 

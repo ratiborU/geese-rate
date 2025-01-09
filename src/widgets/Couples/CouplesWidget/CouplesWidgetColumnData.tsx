@@ -3,6 +3,8 @@ import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import { UserService } from "../../../services/userService";
 import { InstituteService } from "../../../services/instituteService";
 import { CourseService } from "../../../services/courseService";
+import { ICoupleResponse } from "../../../services/coupleService";
+import { parseDate } from "../../../lib/helpers/parseDate";
 
 export const tableName = 'Lessons';
 
@@ -36,15 +38,15 @@ export const keys = [
 ];
 
 export const renderCels = [
-  (text: string) => <LinkButton to={`/admin/couples/edit/${text}`} text='Редактировать' width={240} />,
-  (text: string) => <>{text}</>,
-  (text: string) => {
+  (item: ICoupleResponse) => <LinkButton to={`/admin/couples/edit/${item.id}`} text='Редактировать' width={240} />,
+  (item: ICoupleResponse) => <>{item.topic}</>,
+  (item: ICoupleResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await CourseService.getOne(Number(text));
+        const institute = await CourseService.getOne(Number(item.course));
         return institute
       },
-      queryKey: ["coursesData", text],
+      queryKey: ["coursesData", item.course],
     });
     if (isLoading) {
       return 'Загрузка...'
@@ -54,13 +56,13 @@ export const renderCels = [
     }
     return <>{data?.name} </>
   },
-  (text: string) => {
+  (item: ICoupleResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await UserService.getOne(Number(text));
+        const institute = await UserService.getOne(Number(item.teacher));
         return institute
       },
-      queryKey: ["usersData", text],
+      queryKey: ["usersData", item.teacher],
     });
     if (isLoading) {
       return 'Загрузка...'
@@ -70,13 +72,13 @@ export const renderCels = [
     }
     return <>{data?.first_name} </>
   },
-  (text: string) => {
+  (item: ICoupleResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await InstituteService.getOne(Number(text));
+        const institute = await InstituteService.getOne(Number(item.institute));
         return institute
       },
-      queryKey: ["institutesData", text],
+      queryKey: ["institutesData", item.institute],
     });
     if (isLoading) {
       return 'Загрузка...'
@@ -87,10 +89,10 @@ export const renderCels = [
     return <>{data?.name}</>
   },
 
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <LinkButton to={`/admin/couples/review/${text}`} text='Перейти' width={180} />
+  (item: ICoupleResponse) => <>{item.address}</>,
+  (item: ICoupleResponse) => <>{item.room}</>,
+  (item: ICoupleResponse) => <>{parseDate(item.date)}</>,
+  (item: ICoupleResponse) => <>{item.time}</>,
+  (item: ICoupleResponse) => <>{Number(item.average_rating).toFixed(2)}</>,
+  (item: ICoupleResponse) => <LinkButton to={`/admin/couples/review/${item.id}`} text='Перейти' width={180} />
 ];

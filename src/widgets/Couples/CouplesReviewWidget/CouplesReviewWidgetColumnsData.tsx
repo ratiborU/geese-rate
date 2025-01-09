@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { CoupleService } from "../../../services/coupleService";
+import { IReviewResponse } from "../../../services/reviewsService";
+import { parseDateTime } from "../../../lib/helpers/parseDateTime";
 
 export const tableName = 'Lessons';
 
@@ -10,29 +12,20 @@ export const headerLabels = [
   'Оценка',
   'Комментарий',
   'Примущества',
-  'Анонимно',
+  // 'Анонимно',
   'Дата',
 ];
 
-export const keys = [
-  'user',
-  'lesson',
-  'rating',
-  'comment',
-  'advantages',
-  'is_anonymous',
-  'created_at',
-];
 
 export const renderCels = [
-  (text: string) => <>{text}</>,
-  (text: string) => {
+  (text: IReviewResponse) => <>{text.is_anonymous ? '-' : text.user}</>,
+  (text: IReviewResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await CoupleService.getOne(Number(text));
+        const institute = await CoupleService.getOne(Number(text.lesson));
         return institute
       },
-      queryKey: ["couplesData", text],
+      queryKey: ["couplesData", text.lesson],
     });
     if (isLoading) {
       return 'Загрузка...'
@@ -42,9 +35,9 @@ export const renderCels = [
     }
     return <>{data?.topic} </>
   },
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text ? 'Анонимно' : 'не анонимно'}</>,
-  (text: string) => <>{text}</>,
+  (text: IReviewResponse) => <>{text.rating}</>,
+  (text: IReviewResponse) => <>{text.comment}</>,
+  (text: IReviewResponse) => <>{text.advantages}</>,
+  // (text: IReviewResponse) => <>{text.is_anonymous ? 'Анонимно' : 'не анонимно'}</>,
+  (text: IReviewResponse) => <>{parseDateTime(text.created_at)}</>,
 ];

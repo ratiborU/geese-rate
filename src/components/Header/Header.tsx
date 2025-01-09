@@ -5,6 +5,7 @@ import logo from "../../assets/logo_urfu.svg"
 import { NavLink } from "react-router-dom";
 import { LocalStorageService } from "../../lib/helpers/localStorageService";
 import { IUserResponse } from "../../services/userService";
+// import { useState } from "react";
 
 const Header = () => {
   const user: IUserResponse | null = LocalStorageService.get('user');
@@ -16,6 +17,20 @@ const Header = () => {
         </NavLink>
 
         <nav className={styles.navigation}>
+          {/* {user?.role == 'admin' &&
+            <NavLink to='/admin' >
+              <button className={styles.button}>
+                <span className={styles.buttonText}>Панель</span>
+              </button>
+            </NavLink>
+          }
+          {user?.role == 'teacher' &&
+            <NavLink to='/teacher' >
+              <button className={styles.button}>
+                <span className={styles.buttonText}>Преподаватель</span>
+              </button>
+            </NavLink>
+          } */}
           <NavLink to='/admin' >
             <button className={styles.button}>
               <span className={styles.buttonText}>Панель</span>
@@ -26,6 +41,8 @@ const Header = () => {
               <span className={styles.buttonText}>Преподаватель</span>
             </button>
           </NavLink>
+
+
 
         </nav>
       </div>

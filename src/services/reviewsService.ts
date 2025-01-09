@@ -17,6 +17,7 @@ export type IReviewResponse = {
   "comment": string,
   "advantages": string[],
   "is_anonymous": string,
+  "created_at": string,
 };
 
 

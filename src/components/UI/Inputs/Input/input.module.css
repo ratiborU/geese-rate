@@ -26,3 +26,22 @@
 .input::placeholder {
   color: #B7B7B7;
 }
+
+input[type="date"],
+input[type="time"] {
+  cursor: text;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  padding-right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  padding-right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}

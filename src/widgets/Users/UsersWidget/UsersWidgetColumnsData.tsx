@@ -1,5 +1,5 @@
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
-
+import { IUserResponse } from "../../../services/userService";
 export const tableName = 'Institutes';
 
 export const headerLabels = [
@@ -10,11 +10,11 @@ export const headerLabels = [
   'Роль',
 ];
 
-export const keys = ['id', 'first_name', 'username', 'role'];
+// export const keys = ['id', 'first_name', 'username', 'role'];
 
 export const renderCels = [
-  (text: string) => <LinkButton to={`/admin/users/edit/${text}`} text='Редактировать' width={240} />,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>
+  (item: IUserResponse) => <LinkButton to={`/admin/users/edit/${item.id}`} text='Редактировать' width={240} />,
+  (item: IUserResponse) => <>{item.first_name}</>,
+  (item: IUserResponse) => <>{item.username}</>,
+  (item: IUserResponse) => <>{item.role}</>
 ];

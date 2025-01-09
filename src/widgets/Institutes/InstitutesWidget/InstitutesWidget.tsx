@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { InstituteService } from "../../../services/instituteService";
 import Table from "../../../components/UI/Table/Table";
-import { tableName, headerLabels, keys, renderCels } from "./InstitutesWidgetColumnsData";
+import { tableName, headerLabels, renderCels } from "./InstitutesWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 
 import styles from './institutesWidget.module.css'
@@ -29,7 +29,6 @@ const InstitutesWidget = () => {
         tableName={tableName}
         renderCels={renderCels}
         data={data}
-        keys={keys}
       />
     </>
 

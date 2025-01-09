@@ -1,4 +1,5 @@
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
+import { IInstituteResponse } from "../../../services/instituteService";
 
 export const tableName = 'Institutes';
 
@@ -12,13 +13,13 @@ export const headerLabels = [
   'Рейтинг предметов',
 ];
 
-export const keys = ['id', 'name', 'name', 'name', 'rating', 'id'];
+// export const keys = ['id', 'name', 'name', 'name', 'rating', 'id'];
 
 export const renderCels = [
-  (text: string) => <LinkButton to={`/admin/institutes/edit/${text}`} text='Редактировать' width={240} />,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <>{text}</>,
-  (text: string) => <LinkButton to={`/admin/courses/${text}`} text='Перейти' width={180} />
+  (item: IInstituteResponse) => <LinkButton to={`/admin/institutes/edit/${item.id}`} text='Редактировать' width={240} />,
+  (item: IInstituteResponse) => <>{item.name}</>,
+  (item: IInstituteResponse) => <>{item.name}</>,
+  (item: IInstituteResponse) => <>{item.name}</>,
+  (item: IInstituteResponse) => <>{item.rating}</>,
+  (item: IInstituteResponse) => <LinkButton to={`/admin/courses/${item.id}`} text='Перейти' width={180} />
 ];

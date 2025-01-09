@@ -1,6 +1,6 @@
 import Table from '../../../components/UI/Table/Table';
 import { IReviewResponse } from '../../../services/reviewsService';
-import { tableName, headerLabels, keys, renderCels } from "./CouplesReviewWidgetColumnsData";
+import { tableName, headerLabels, renderCels } from "./CouplesReviewWidgetColumnsData";
 // import styles from "./couplesTeacherReviewWidget.module.css"
 
 const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
@@ -13,7 +13,6 @@ const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
         tableName={tableName}
         renderCels={renderCels}
         data={data}
-        keys={keys}
       />
     </>
 

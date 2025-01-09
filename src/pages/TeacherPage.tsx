@@ -8,7 +8,8 @@ import { IUserResponse } from "../services/userService";
 import { CoupleService } from "../services/coupleService";
 import TitleWidget from "../widgets/TitleWidget/TitleWidget";
 import image from '../assets/institute people.png'
-import CoursesTeacherWidget from "../widgets/Courses/CoursesTeacherWidget/CoursesTeacherWidget";
+// import CoursesTeacherWidget from "../widgets/Courses/CoursesTeacherWidget/CoursesTeacherWidget";
+import TeacherWidget from "../widgets/Teacher/TeacherWidget/TeacherWidget";
 
 // import CoursesWidget from "../widgets/Courses/CoursesWidget/CoursesWidget";
 
@@ -53,7 +54,7 @@ const TeacherPage = () => {
         description={`Добро пожаловать, ${teacher.first_name}`}
         image={image}
       />
-      <CoursesTeacherWidget data={coursesData} />
+      <TeacherWidget data={coursesData} />
       {/* <CouplesWidget data={couplesData} /> */}
 
     </div>

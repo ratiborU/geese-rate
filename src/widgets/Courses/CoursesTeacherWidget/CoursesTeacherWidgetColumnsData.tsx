@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import { UserService } from "../../../services/userService";
 import { InstituteService } from "../../../services/instituteService";
+import { ICourseResponse } from "../../../services/courseService";
 
 export const tableName = 'Institutes';
 
@@ -15,15 +16,15 @@ export const headerLabels = [
   'Пары предмета',
 ];
 
-export const keys = ['id', 'name', 'institute', 'teacher', 'schedule', 'id'];
+// export const keys = ['id', 'name', 'institute', 'teacher', 'schedule', 'id'];
 
 export const renderCels = [
-  (text: string) => <LinkButton to={`/admin/courses/edit/${text}`} text='Редактировать' width={240} />,
-  (text: string) => <>{text}</>,
-  (text: string) => {
+  (item: ICourseResponse) => <LinkButton to={`/admin/courses/edit/${item.id}`} text='Редактировать' width={240} />,
+  (item: ICourseResponse) => <>{item.name}</>,
+  (item: ICourseResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await InstituteService.getOne(Number(text));
+        const institute = await InstituteService.getOne(Number(item.institute));
         return institute
       },
       queryKey: ["coursesDatasdsd"],
@@ -36,10 +37,10 @@ export const renderCels = [
     }
     return <>{data?.name}</>
   },
-  (text: string) => {
+  (item: ICourseResponse) => {
     const { data, isLoading, error } = useQuery({
       queryFn: async () => {
-        const institute = await UserService.getOne(Number(text));
+        const institute = await UserService.getOne(Number(item.teacher));
         return institute
       },
       queryKey: ["coursesData"],
@@ -52,6 +53,6 @@ export const renderCels = [
     }
     return <>{data?.first_name} </>
   },
-  (text: string) => <>{text}</>,
-  (text: string) => <LinkButton to={`/teacher/couples/${text}`} text='Перейти' width={180} />
+  (item: ICourseResponse) => <>{item.schedule}</>,
+  (item: ICourseResponse) => <LinkButton to={`/admin/couples/${item.id}?institute=${item.institute}&teacher=${item.teacher}`} text='Перейти' width={180} />
 ];

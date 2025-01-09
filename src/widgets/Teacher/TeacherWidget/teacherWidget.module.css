@@ -1,0 +1,19 @@
+.buttons {
+  position: absolute;
+  top: 275px;
+  right: 60px;
+  display: flex;
+  gap: 15px;
+}
+
+.button {
+  /* position: absolute;
+  top: 275px;
+  right: 60px; */
+}
+
+.button2 {
+  /* position: absolute;
+  top: 275px;
+  right: 400px; */
+}

@@ -1,6 +1,6 @@
 import Table from '../../../components/UI/Table/Table';
 import { IUserResponse } from '../../../services/userService';
-import { tableName, headerLabels, keys, renderCels } from "./UsersWidgetColumnsData";
+import { tableName, headerLabels, renderCels } from "./UsersWidgetColumnsData";
 
 
 const UsersWidget = (props: { data: IUserResponse[]; }) => {
@@ -11,7 +11,6 @@ const UsersWidget = (props: { data: IUserResponse[]; }) => {
       tableName={tableName}
       renderCels={renderCels}
       data={data}
-      keys={keys}
     />
   );
 };

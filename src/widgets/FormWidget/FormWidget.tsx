@@ -25,6 +25,8 @@ const FormWidget = (props: { id: string; }) => {
   const { id } = props;
   const { register, handleSubmit, setValue } = useForm<TCreateReviewSchema>({ resolver: zodResolver(createReviewSchema) });
 
+  const favorites = [false, false, false, false, false, false, false]
+
   const favoriteList = [
     'Полезный материал',
     'Подача материала',
@@ -45,6 +47,7 @@ const FormWidget = (props: { id: string; }) => {
   ]
 
   const onSubmit = async (data: TCreateReviewSchema) => {
+    data.advantages = favoriteListValues.filter((_, i) => favorites[i])
     await ReviewService.create(data as unknown as TCreateReviewSchema);
     LocalStorageService.save(`rate ${id}`, true);
     LocalStorageService.save(`FIO`, data.user)
@@ -52,10 +55,10 @@ const FormWidget = (props: { id: string; }) => {
     location.reload();
   }
 
-  const reset = async () => {
-    LocalStorageService.remove(`rate ${id}`);
-    location.reload();
-  }
+  // const reset = async () => {
+  //   LocalStorageService.remove(`rate ${id}`);
+  //   location.reload();
+  // }
 
   // LocalStorageService.save(`rate ${id}`, false)
   if (LocalStorageService.get(`rate ${id}`)) {
@@ -63,12 +66,12 @@ const FormWidget = (props: { id: string; }) => {
       <>
         <div className={styles.block}>
           <p className={styles.title}>Спасибо за ваш отзыв!</p>
-          <Button
+          {/* <Button
             text='Оставить еще'
             buttonProps={{
               onClick: reset
             }}
-          />
+          /> */}
         </div>
       </>
     )
@@ -79,6 +82,7 @@ const FormWidget = (props: { id: string; }) => {
   }
 
   const onFavoriteSelect = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    favorites[Number(e.currentTarget.value)] = e.currentTarget.checked;
     setValue('advantages', [e.currentTarget.value]);
   }
 
@@ -132,8 +136,9 @@ const FormWidget = (props: { id: string; }) => {
               label={favoriteList[i]}
               inputProps={{
                 name: 'favorite',
-                value: favoriteListValues[i],
+                value: i,
                 id: `review-favorite-${i + 1}`,
+                type: 'checkbox',
                 onClick: onFavoriteSelect
               }}
             />
@@ -165,7 +170,7 @@ const FormWidget = (props: { id: string; }) => {
         <input className={styles.inputNone} type="text" {...register('rating')} />
         <input className={styles.inputNone} type="text" {...register('advantages')} />
         <input value={id} className={styles.inputNone} type="text" {...register('lesson')} />
-        <input className={styles.inputNone} type="text" {...register('is_anonymous')} />
+        <input defaultValue={LocalStorageService.get(`isAnonymous`) ? LocalStorageService.get(`isAnonymous`)! : 'False'} className={styles.inputNone} type="text" {...register('is_anonymous')} />
 
         <Button
           text='Отправить'

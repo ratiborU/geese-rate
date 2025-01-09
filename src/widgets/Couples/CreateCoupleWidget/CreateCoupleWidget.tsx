@@ -11,6 +11,8 @@ import { InstituteService } from '../../../services/instituteService';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import { CourseService } from '../../../services/courseService';
+import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 
 const createLessonSchema = z.object({
@@ -27,6 +29,8 @@ const createLessonSchema = z.object({
 type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const CreateCouplesWidget = () => {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -107,7 +111,7 @@ const CreateCouplesWidget = () => {
           inputProps={{
             id: 'create-course-name',
             ...register('date'),
-            type: "text",
+            type: "date",
             placeholder: 'Введите дату 2025-01-20...',
             autoComplete: "new-password"
           }}
@@ -117,7 +121,7 @@ const CreateCouplesWidget = () => {
           inputProps={{
             id: 'create-course-name',
             ...register('time'),
-            type: "text",
+            type: "time",
             placeholder: 'Введите время 12:00:00...',
             autoComplete: "new-password"
           }}
@@ -126,7 +130,8 @@ const CreateCouplesWidget = () => {
           label='Институт'
           text='Выберите институт...'
           selectProps={{
-            ...register('institute')
+            ...register('institute'),
+            defaultValue: searchParams.get('institute') || ''
           }}
           options={institutes}
         />
@@ -134,7 +139,8 @@ const CreateCouplesWidget = () => {
           label='Предмет'
           text='Выберите предмет...'
           selectProps={{
-            ...register('course')
+            ...register('course'),
+            defaultValue: searchParams.get('course') || ''
           }}
           options={courses}
         />
@@ -142,7 +148,8 @@ const CreateCouplesWidget = () => {
           label='Преподаватель'
           text='Выберите преподавателя...'
           selectProps={{
-            ...register('teacher')
+            ...register('teacher'),
+            defaultValue: searchParams.get('teacher') || ''
           }}
           options={users}
         />

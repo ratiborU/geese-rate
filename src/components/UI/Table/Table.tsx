@@ -7,14 +7,13 @@ import styles from './table.module.css'
 
 type TableProps = {
   headerLabels: string[],
-  renderCels?: ((text: string) => ReactNode)[],
-  keys: string[];
+  renderCels?: ((text: any) => ReactNode)[],
   data: any[],
   tableName: string,
 }
 
 const Table = (props: TableProps) => {
-  const { headerLabels, renderCels, tableName, data, keys } = props;
+  const { headerLabels, renderCels, tableName, data } = props;
 
   return (
     <table className={styles.block}>
@@ -29,7 +28,6 @@ const Table = (props: TableProps) => {
             <TableRow
               key={`${tableName} row ${x.id}`} row={x}
               renderCels={renderCels}
-              keys={keys}
               tableName={tableName}
             />
           )
