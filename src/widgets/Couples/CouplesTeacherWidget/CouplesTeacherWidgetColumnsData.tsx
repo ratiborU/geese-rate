@@ -7,6 +7,7 @@ export const headerLabels = [
   'Редактировать',
   'Дата проведения',
   'Статус',
+  'Средний рейтинг',
   'Ссылка на QR',
   'Список студентов',
 ];
@@ -15,12 +16,14 @@ export const keys = [
   'id',
   'date',
   'date',
+  'average_rating',
   'id',
   'id',
 ];
 
 export const renderCels = [
   (text: string) => <LinkButton to={`/admin/couples/edit/${text}`} text='Редактировать' width={240} />,
+  (text: string) => <>{text}</>,
   (text: string) => <>{text}</>,
   (text: string) => <>{text}</>,
   (text: string) => <LinkButton to={`/teacher/qr/${text}`} text='QR' width={240} />,

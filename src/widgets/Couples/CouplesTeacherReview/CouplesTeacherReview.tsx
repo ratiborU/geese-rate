@@ -3,10 +3,10 @@
 import Table from '../../../components/UI/Table/Table';
 // import { ICoupleResponse } from "../../../services/coupleService";
 import { IReviewResponse } from '../../../services/reviewsService';
-import { tableName, headerLabels, keys, renderCels } from "./CouplesReviewWidgetColumnsData";
+import { tableName, headerLabels, keys, renderCels } from "./CouplesTeachreviewWidgetColumnsData";
 // import styles from "./couplesTeacherReviewWidget.module.css"
 
-const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
+const CouplesTeacherReviewWidget = (props: { data: IReviewResponse[]; }) => {
   const { data } = props
 
   return (
@@ -24,4 +24,4 @@ const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
   );
 };
 
-export default CouplesReviewWidget;
+export default CouplesTeacherReviewWidget;
