@@ -1,12 +1,4 @@
-// import { z } from 'zod';
 import styles from './formWidget.module.css'
-// import { useForm } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
-
-// import { InstituteService } from '../../../services/instituteService';
-// import { LocalStorageService } from '../../lib/helpers/localStorageService';
-// import { useState } from 'react';
 import Input from '../../components/UI/Inputs/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Textarea from '../../components/UI/Inputs/Textarea/Teaxtarea';
@@ -15,7 +7,6 @@ import RadioButton from '../../components/UI/Buttons/RadioButton/RadioButton';
 import { ReviewService } from '../../services/reviewsService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-// import { useState } from 'react';
 import { LocalStorageService } from '../../lib/helpers/localStorageService';
 
 const createReviewSchema = z.object({
@@ -33,12 +24,6 @@ type TCreateReviewSchema = z.infer<typeof createReviewSchema>;
 const FormWidget = (props: { id: string; }) => {
   const { id } = props;
   const { register, handleSubmit, setValue } = useForm<TCreateReviewSchema>({ resolver: zodResolver(createReviewSchema) });
-
-
-  // const [rate, setRate] = useState('0');
-  // const [favorite, setFavorite] = useState('0');
-  // const [advantages, setAdvantages] = useState([]);
-
 
   const favoriteList = [
     'Полезный материал',
@@ -60,7 +45,6 @@ const FormWidget = (props: { id: string; }) => {
   ]
 
   const onSubmit = async (data: TCreateReviewSchema) => {
-    // console.log(data);
     await ReviewService.create(data as unknown as TCreateReviewSchema);
     LocalStorageService.save(`rate ${id}`, true);
     LocalStorageService.save(`FIO`, data.user)
@@ -102,16 +86,6 @@ const FormWidget = (props: { id: string; }) => {
     setValue('is_anonymous', e.currentTarget.checked ? 'True' : 'False');
   }
 
-  const test = () => {
-    // console.log(getValues('user'), getValues('lesson'), getValues('rating'), getValues('comment'), getValues('advantages'), getValues('is_anonymous'));
-    // console.log('user', getValues('user'));
-    // console.log('lesson', getValues('lesson'));
-    // console.log('rating', getValues('rating'));
-    // console.log('comment', getValues('comment'));
-    // console.log('advantages', getValues('advantages'));
-    // console.log('is_anonymous', getValues('is_anonymous'));
-
-  }
 
   return (
     <div className={styles.block}>
@@ -134,13 +108,6 @@ const FormWidget = (props: { id: string; }) => {
           <p className={styles.text}>5 - очень понравилась</p>
         </div>
 
-        {/* <div className={styles.buttonsRate}>
-          <button className={rate == 1 ? styles.buttonRateActive : styles.buttonRate} onClick={() => setRate(1)} type='button'>1</button>
-          <button className={rate == 2 ? styles.buttonRateActive : styles.buttonRate} onClick={() => setRate(2)} type='button'>2</button>
-          <button className={rate == 3 ? styles.buttonRateActive : styles.buttonRate} onClick={() => setRate(3)} type='button'>3</button>
-          <button className={rate == 4 ? styles.buttonRateActive : styles.buttonRate} onClick={() => setRate(4)} type='button'>4</button>
-          <button className={rate == 5 ? styles.buttonRateActive : styles.buttonRate} onClick={() => setRate(5)} type='button'>5</button>
-        </div> */}
 
         <div className={styles.rates}>
           {...[...Array(5)].map((_, i) =>
@@ -194,7 +161,7 @@ const FormWidget = (props: { id: string; }) => {
           <label className={styles.label} htmlFor='isAnonymous'> Остаться анонимным</label>
         </div>
 
-        {/* Пстышки */}
+        {/* Пустышки */}
         <input className={styles.inputNone} type="text" {...register('rating')} />
         <input className={styles.inputNone} type="text" {...register('advantages')} />
         <input value={id} className={styles.inputNone} type="text" {...register('lesson')} />
@@ -203,8 +170,7 @@ const FormWidget = (props: { id: string; }) => {
         <Button
           text='Отправить'
           buttonProps={{
-            type: 'submit',
-            onClick: test
+            type: 'submit'
           }}
         />
       </form>

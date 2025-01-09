@@ -17,8 +17,6 @@ const createUserSchema = z.object({
 type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateInstituteWidget = () => {
-  // const queryClient = useQueryClient();
-
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {

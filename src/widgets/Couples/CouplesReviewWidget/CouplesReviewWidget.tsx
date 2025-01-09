@@ -1,7 +1,4 @@
-// import CouplesTable from "../../../components/Tables/CouplesTable/CouplesTable";
-// import LinkButton from '../../../components/UI/LinkButton/LinkButton';
 import Table from '../../../components/UI/Table/Table';
-// import { ICoupleResponse } from "../../../services/coupleService";
 import { IReviewResponse } from '../../../services/reviewsService';
 import { tableName, headerLabels, keys, renderCels } from "./CouplesReviewWidgetColumnsData";
 // import styles from "./couplesTeacherReviewWidget.module.css"
@@ -11,7 +8,6 @@ const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
 
   return (
     <>
-      {/* <LinkButton className={styles.button} text={"Добавить отзыв"} to='/admin/couples/create' /> */}
       <Table
         headerLabels={headerLabels}
         tableName={tableName}

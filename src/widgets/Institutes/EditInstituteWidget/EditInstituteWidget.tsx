@@ -1,10 +1,7 @@
-// import React from 'react';
 import { z } from 'zod';
 import styles from './editInstituteWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
-// import { IUserRequest, IUserResponse, UserService } from '../../services/userService';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import Input from '../../../components/UI/Inputs/Input/Input';
 import Button from '../../../components/UI/Button/Button';
@@ -21,8 +18,6 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
   const { data } = props;
-  // const queryClient = useQueryClient();
-
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (formData: TCreateUserSchema) => {

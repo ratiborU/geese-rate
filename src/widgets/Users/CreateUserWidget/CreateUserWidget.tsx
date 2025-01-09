@@ -2,7 +2,6 @@ import { z } from 'zod';
 import styles from './createUserWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
 import { IUserRequest, UserService } from '../../../services/userService';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import Button from '../../../components/UI/Button/Button';
@@ -19,17 +18,10 @@ const createUserSchema = z.object({
   password: z.string().min(1, "Это поле обязательно для заполнения"),
 
 })
-// .refine(data => {
-//   return data.role == 'student' || data.role == 'admin' || data.role == 'teacher';
-// }, {
-//   message: "Некорректный ввод роли",
-//   path: ["role"]
-// });
 
 type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateUserWidget = () => {
-  // const queryClient = useQueryClient();
   const options = [
     { value: 'admin', text: 'Администратор' },
     { value: 'teacher', text: 'Преподаватель' }
@@ -49,7 +41,6 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-first_name',
             ...register('first_name'),
-            // className: styles.input,
             type: "text",
             placeholder: 'Введите ФИО...',
             autoComplete: "new-password"
@@ -61,7 +52,6 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-username',
             ...register('username'),
-            // className: styles.input,
             type: "text",
             placeholder: 'Введите логин...',
             autoComplete: "new-password"
@@ -73,7 +63,6 @@ const CreateUserWidget = () => {
           inputProps={{
             id: 'create-user-password',
             ...register('password'),
-            // className: styles.input,
             type: "password",
             placeholder: 'Введите пароль...',
             autoComplete: "new-password"

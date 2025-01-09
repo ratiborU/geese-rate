@@ -1,7 +1,7 @@
 import styles from './adminWidget.module.css'
 import image1 from '../../assets/university-svgrepo-com 1.svg'
 import image2 from '../../assets/university-svgrepo-com 1 (1).svg'
-import { NavLink } from 'react-router-dom';
+import LinkButton from '../../components/UI/LinkButton/LinkButton';
 
 const AdminWidget = () => {
   return (
@@ -16,18 +16,19 @@ const AdminWidget = () => {
             <img className={styles.image} src={image1} alt="" />
             <p className={styles.text}>Операции с образовательными учереждениями</p>
           </div>
-          <NavLink to={`/admin/institutes`}><button className={styles.button}>Открыть рейтинг институтов</button></NavLink>
-          {/* <NavLink to={`/admin/institutes/create`}><button className={styles.button}>Создать институт</button></NavLink> */}
+          <LinkButton text='Открыть рейтинг институтов' to='/admin/institutes' width={380} />
         </div>
         <div className={styles.cart}>
           <div className={styles.cart__title}>
             <img className={styles.image} src={image2} alt="" />
             <p className={styles.text}>Операции с Пользователями</p>
           </div>
-          <NavLink to={`/admin/users`}><button className={styles.button}>Просмотр пользователей</button></NavLink>
-          <NavLink to={`/admin/users/create`}><button className={styles.button}>Создать пользователя</button></NavLink>
-          <NavLink to={`/admin/users`}><button className={styles.button}>Просмотр предметов</button></NavLink>
-          {/* <NavLink to={`/teacher`}><button className={styles.button}>Страница препода</button></NavLink> */}
+          <div className={styles.buttons}>
+            <LinkButton text='Просмотр пользователей' to='/admin/users' width={380} />
+            <LinkButton text='Создать пользователя' to='/admin/users/create' width={380} />
+            <LinkButton text='Просмотр предметов' to='/admin/users' width={380} />
+          </div>
+
         </div>
       </div>
     </div>

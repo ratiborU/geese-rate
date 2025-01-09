@@ -30,10 +30,10 @@ export const AuthService = {
     UserSecretStorageService.save(response.data);
   },
 
-  // async logout() {
-  //   await $https.post(`/auth/logout`, {
-  //     refresh_token: UserSecretStorageService.get()?.refresh,
-  //   });
-  //   UserSecretStorageService.clear();
-  // },
+  async logout() {
+    await $https.post(`/auth/logout`, {
+      refresh_token: UserSecretStorageService.get()?.refresh,
+    });
+    UserSecretStorageService.clear();
+  },
 };

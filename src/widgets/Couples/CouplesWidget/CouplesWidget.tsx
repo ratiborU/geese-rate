@@ -1,4 +1,3 @@
-// import CouplesTable from "../../../components/Tables/CouplesTable/CouplesTable";
 import LinkButton from '../../../components/UI/LinkButton/LinkButton';
 import Table from '../../../components/UI/Table/Table';
 import { ICoupleResponse } from "../../../services/coupleService";

@@ -19,11 +19,13 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
   const { isVisible, change } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const { register, handleSubmit, formState: { errors } } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
+  const { register, handleSubmit } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data: TLoginSchema) => {
     await AuthService.login(data);
     // 3.14 here
+    // просто ужас, страхолюдина, 
+    // уничтожить при первой же возможности
     const users = await UserService.getAll();
     const user = users.filter(x => x.username == data.username)[0];
     LocalStorageService.save('user', user)

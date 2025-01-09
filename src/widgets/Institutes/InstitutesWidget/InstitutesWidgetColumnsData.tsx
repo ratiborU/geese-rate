@@ -1,4 +1,3 @@
-// import Button from "../../../components/UI/Button/Button";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 
 export const tableName = 'Institutes';
