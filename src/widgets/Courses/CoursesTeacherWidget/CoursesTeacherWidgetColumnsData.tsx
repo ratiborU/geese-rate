@@ -55,5 +55,5 @@ export const renderCels = [
   (text: string) => <>{text}</>,
   // (text: string) => <>{text}</>,
   // (text: string) => <LinkButton to={`/admin/courses/teacher/${text}`} text='Перейти' width={180} />,
-  (text: string) => <LinkButton to={`/admin/couples/${text}`} text='Перейти' width={180} />
+  (text: string) => <LinkButton to={`/teacher/couples/${text}`} text='Перейти' width={180} />
 ];

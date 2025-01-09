@@ -8,7 +8,7 @@ const EditCouplesPage = () => {
   const { id } = useParams();
   const { data, isLoading, error } = useQuery({
     queryFn: async () => await CoupleService.getOne(Number(id)),
-    queryKey: ["course", id],
+    queryKey: ["couple", id],
     staleTime: Infinity,
   });
 

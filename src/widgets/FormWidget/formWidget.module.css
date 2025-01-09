@@ -1,5 +1,5 @@
 .block {
-  width: 300px;
+  width: 430px;
   margin: 0 auto;
   margin-top: 60px;
 }
@@ -8,6 +8,13 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.text {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 110%;
+  color: #222;
 }
 
 .input {
@@ -36,7 +43,8 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: 40px;
+  font-weight: 600;
   margin-bottom: 32px;
 }
 
@@ -92,4 +100,19 @@
   background-color: #4776dd;
   color: #fff;
   border-radius: 24px;
+}
+
+.rates {
+  display: flex;
+  gap: 20px;
+}
+
+.favorites {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputNone {
+  display: none;
 }

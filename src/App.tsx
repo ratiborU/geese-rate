@@ -20,6 +20,8 @@ import CoursesTeacherPage from "./pages/Courses/CoursesTeacherPage"
 import CoupleReviewPage from "./pages/Couples/CoupleReviewPage"
 import FormPage from "./pages/FormPage"
 import QRPage from "./pages/Couples/QRPage"
+import CouplesTeacherPage from "./pages/Couples/CouplesTeacherPage"
+import CoupleTeacherReviewPage from "./pages/Couples/CoupleTeacherReviewPage"
 
 
 const queryClient = new QueryClient()
@@ -51,6 +53,8 @@ function App() {
           <Route path="/admin/couples/edit/:id" element={<EditCouplesPage />} />
 
           <Route path="/teacher" element={<TeacherPage />} />
+          <Route path="/teacher/couples/:id" element={<CouplesTeacherPage />} />
+          <Route path="/teacher/couples/review/:id" element={<CoupleTeacherReviewPage />} />
           <Route path="/teacher/qr/:id" element={<QRPage />} />
 
         </Route>

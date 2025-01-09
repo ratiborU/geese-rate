@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CourseService } from "../services/courseService";
 import { LocalStorageService } from "../lib/helpers/localStorageService";
 import { IUserResponse } from "../services/userService";
-import CouplesWidget from "../widgets/Couples/CouplesWidget/CouplesWidget";
+// import CouplesWidget from "../widgets/Couples/CouplesWidget/CouplesWidget";
 import { CoupleService } from "../services/coupleService";
 import TitleWidget from "../widgets/TitleWidget/TitleWidget";
 import image from '../assets/institute people.png'
