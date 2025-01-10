@@ -12,6 +12,8 @@ import { UserService } from '../../../services/userService';
 import { InstituteService } from '../../../services/instituteService';
 // import { useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const createUserSchema = z.object({
@@ -26,6 +28,7 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 const CreateCourseWidget = () => {
   // const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const notify = () => toast.success("Предмет успешно создан!");
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -48,6 +51,7 @@ const CreateCourseWidget = () => {
 
   const onSubmit = async (data: TCreateUserSchema) => {
     await CourseService.create(data as unknown as TCreateUserSchema);
+    notify();
   }
 
   if (usersIsLoading || institutesIsLoading) {
@@ -108,6 +112,11 @@ const CreateCourseWidget = () => {
           }}
         />
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

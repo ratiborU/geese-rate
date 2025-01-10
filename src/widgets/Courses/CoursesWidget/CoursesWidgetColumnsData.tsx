@@ -28,7 +28,7 @@ export const renderCels = [
         const institute = await InstituteService.getOne(Number(item.institute));
         return institute
       },
-      queryKey: ["coursesDatasdsd"],
+      queryKey: ["institute", item.institute],
     });
     if (isLoading) {
       return 'Загрузка...'
@@ -44,7 +44,7 @@ export const renderCels = [
         const institute = await UserService.getOne(Number(item.teacher));
         return institute
       },
-      queryKey: ["coursesData"],
+      queryKey: ["user", item.teacher],
     });
     if (isLoading) {
       return 'Загрузка...'

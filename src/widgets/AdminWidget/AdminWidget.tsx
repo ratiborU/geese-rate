@@ -26,7 +26,7 @@ const AdminWidget = () => {
           <div className={styles.buttons}>
             <LinkButton text='Просмотр пользователей' to='/admin/users' width={380} />
             <LinkButton text='Создать пользователя' to='/admin/users/create' width={380} />
-            <LinkButton text='Просмотр предметов' to='/admin/users' width={380} />
+            <LinkButton text='Просмотр предметов' to='/admin/courses' width={380} />
           </div>
 
         </div>

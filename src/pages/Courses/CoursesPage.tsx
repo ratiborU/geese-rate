@@ -13,6 +13,9 @@ const CoursesPage = () => {
   const { data, isLoading, error } = useQuery({
     queryFn: async () => {
       const courses = await CourseService.getAll()
+      if (!id) {
+        return courses;
+      }
       return courses.filter(course => course.institute == id);
     },
     queryKey: ["courses"],
@@ -21,6 +24,9 @@ const CoursesPage = () => {
 
   const { data: institute, isLoading: instituteIsLoading, error: isntituteError } = useQuery({
     queryFn: async () => {
+      if (!id) {
+        return null
+      }
       const courses = await InstituteService.getOne(Number(id))
       return courses;
     },
@@ -28,7 +34,7 @@ const CoursesPage = () => {
     // staleTime: Infinity,
   });
 
-  if (isLoading || instituteIsLoading || !data || !id || !institute) {
+  if (isLoading || instituteIsLoading || !data) {
     return <>Загрузка...</>
   }
 
@@ -40,7 +46,7 @@ const CoursesPage = () => {
     <div>
       <TitleWidget
         title='Предметы'
-        description={`Выберите необходимый вам предмет в ${institute.name}`}
+        description={`Выберите необходимый вам предмет в ${institute?.name || ''}`}
         image={image}
       />
       <CoursesWidget data={data} />

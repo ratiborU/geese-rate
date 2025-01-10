@@ -8,6 +8,9 @@ import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const createUserSchema = z.object({
   first_name: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -27,10 +30,13 @@ const CreateUserWidget = () => {
     { value: 'teacher', text: 'Преподаватель' }
   ]
 
+  const notify = () => toast.success("Пользователь успешно создан");
+
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {
     await UserService.create(data as unknown as IUserRequest);
+    notify();
   }
 
   return (
@@ -73,7 +79,8 @@ const CreateUserWidget = () => {
         <SelectInput
           label='Роль'
           selectProps={{
-            ...register('role')
+            ...register('role'),
+            defaultValue: 'teacher'
           }}
           options={options}
         />
@@ -86,6 +93,11 @@ const CreateUserWidget = () => {
           }}
         />
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

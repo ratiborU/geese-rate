@@ -12,6 +12,9 @@ import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const createLessonSchema = z.object({
   institute: z.string().min(1, "Это поле обязательно для заполнения"),
   course: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -27,6 +30,8 @@ type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
   const { data } = props;
+  const notify = () => toast.success("Пара успешно изменена!");
+  const notifyDelete = () => toast.success("Пара успешно удалена!");
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -58,10 +63,12 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
 
   const onSubmit = async (data: TCreateLessonSchema) => {
     await CoupleService.create(data as unknown as TCreateLessonSchema);
+    notify();
   }
 
   const onDelete = async () => {
     await CoupleService.delete(Number(data.id));
+    notifyDelete();
   }
 
   if (usersIsLoading || institutesIsLoading || coursesIsLoading) {
@@ -175,6 +182,11 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           />
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

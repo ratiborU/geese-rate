@@ -6,6 +6,8 @@ import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import { InstituteService } from '../../../services/instituteService';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import Button from '../../../components/UI/Button/Button';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const createUserSchema = z.object({
@@ -17,14 +19,22 @@ const createUserSchema = z.object({
 type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const CreateInstituteWidget = () => {
+  const notify = () => toast.success("Институт успешно создан!");
+
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {
     await InstituteService.create(data as unknown as TCreateUserSchema);
+    notify();
   }
 
   return (
     <div className={styles.block}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input
           label='Название инстиута'

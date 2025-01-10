@@ -23,5 +23,5 @@ export const renderCels = [
   (text: ICoupleResponse) => <>{getCoupleStatus(text)}</>,
   (text: ICoupleResponse) => <>{Number(text.average_rating).toFixed(2)}</>,
   (text: ICoupleResponse) => <LinkButton to={`/teacher/qr/${text.id}`} text='QR' width={240} />,
-  (text: ICoupleResponse) => <LinkButton to={`/teacher/couples/review/${text.id}`} text='Перейти' width={240} />,
+  (text: ICoupleResponse) => <LinkButton to={`/teacher/couples/review/${text.id}?course=${text.course}`} text='Перейти' width={240} />,
 ];

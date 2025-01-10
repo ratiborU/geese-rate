@@ -10,6 +10,8 @@ import Input from '../../../components/UI/Inputs/Input/Input';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const createUserSchema = z.object({
@@ -23,6 +25,8 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const EditCourseWidget = (props: { data: ICourseResponse; }) => {
   const { data } = props;
+  const notify = () => toast.success("Предмет успешно изменен!");
+  const notifyDelete = () => toast.success("Предмет успешно удален!");
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -45,10 +49,12 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
 
   const onSubmit = async (formData: TCreateUserSchema) => {
     await CourseService.update(data.id, formData as unknown as TCreateUserSchema);
+    notify();
   }
 
   const onDelete = async () => {
     await CourseService.delete(Number(data.id));
+    notifyDelete();
   }
 
   if (usersIsLoading || institutesIsLoading) {
@@ -120,6 +126,11 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
           />
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

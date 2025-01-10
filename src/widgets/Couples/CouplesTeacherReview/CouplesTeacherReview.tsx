@@ -1,28 +1,45 @@
 import Button from '../../../components/UI/Button/Button';
 import Table from '../../../components/UI/Table/Table';
 import { IReviewResponse } from '../../../services/reviewsService';
-import { tableName, headerLabels, renderCels } from "./CouplesTeachreviewWidgetColumnsData";
+import { tableName, headerLabels, renderCels } from "./CouplesTeacherReviewWidgetColumnsData";
 import styles from "./couplesTeacherReviewWidget.module.css"
-// import image from '../../../assets/../../../assets/Список посещаемости.xlsx'
-// import { useParams } from 'react-router-dom';
+import { exportExcel } from '../../../lib/helpers/exportExcel';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const CouplesTeacherReviewWidget = (props: { data: IReviewResponse[]; }) => {
   const { data } = props
   // const { id } = useParams();
 
+  const notify = () => toast.success("Файл успешно создан!");
+
+  const onClick = () => {
+    exportExcel(data, 'посещаемость');
+    notify();
+  }
+
   return (
     <>
-      <a href={''} download={`image1.png`}>
-        <Button
-          className={styles.button}
-          text={"Выгрузить в Excel"}
-        />
-      </a>
+      <Button
+        className={styles.button}
+        text={"Выгрузить в Excel"}
+        buttonProps={{
+          onClick
+        }}
+      />
       <Table
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
         data={data}
+      />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
       />
     </>
 

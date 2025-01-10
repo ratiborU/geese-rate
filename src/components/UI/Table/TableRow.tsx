@@ -13,7 +13,7 @@ const TableRow = (props: TableHeaderRowProps) => {
   return (
     <tr className={styles.line}>
       {...renderCels!.map((render, i) =>
-        <th key={`${tableName} table row ${i}`} className={styles.cell}>
+        <th key={`${tableName} table row ${row.id} ${i}`} className={styles.cell}>
           {render(row!)}
         </th>
       )}

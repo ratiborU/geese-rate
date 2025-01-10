@@ -43,6 +43,7 @@ function App() {
           <Route path="/admin/institutes/edit/:id" element={<EditInstitutePage />} />
 
           <Route path="/admin/courses/:id" element={<CoursesPage />} />
+          <Route path="/admin/courses" element={<CoursesPage />} />
           <Route path="/admin/courses/teacher/:id" element={<CoursesTeacherPage />} />
           <Route path="/admin/courses/create" element={<CreateCoursePage />} />
           <Route path="/admin/courses/edit/:id" element={<EditCoursePage />} />

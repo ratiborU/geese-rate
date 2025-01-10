@@ -21,6 +21,7 @@
   height: 68px;
   background: #ebebeb;
   padding-left: 30px;
+  transition: 0.1s ease;
 }
 
 .input::placeholder {
@@ -30,18 +31,20 @@
 input[type="date"],
 input[type="time"] {
   cursor: text;
+  /* transition: 1s ease; */
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  padding-right: 20px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  padding-right: 19px;
+  transform: scale(1.1);
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   padding-right: 20px;
   width: 30px;
   height: 30px;
   cursor: pointer;
+  transition: 0.15s ease-out;
 }

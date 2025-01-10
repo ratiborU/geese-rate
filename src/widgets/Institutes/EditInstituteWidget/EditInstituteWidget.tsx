@@ -6,6 +6,8 @@ import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import Input from '../../../components/UI/Inputs/Input/Input';
 import Button from '../../../components/UI/Button/Button';
 import { IInstituteResponse, InstituteService } from '../../../services/instituteService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const createUserSchema = z.object({
@@ -18,14 +20,19 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
   const { data } = props;
+  const notify = () => toast.success("Институт успешно изменен!");
+  const notifyDelete = () => toast.success("Институт успешно удален!");
+
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (formData: TCreateUserSchema) => {
     await InstituteService.update(data.id, formData as unknown as TCreateUserSchema);
+    notify();
   }
 
   const onDelete = async () => {
     await InstituteService.delete(data.id);
+    notifyDelete();
   }
 
   return (
@@ -79,6 +86,11 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           />
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

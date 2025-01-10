@@ -9,6 +9,9 @@ import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const editUserSchema = z.object({
   first_name: z.string().min(1, "Это поле обязательно для заполнения"),
   last_name: z.string(),
@@ -28,14 +31,19 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
     { value: 'teacher', text: 'Преподаватель' }
   ]
 
+  const notify = () => toast.success("Пользователь успешно изменен!");
+  const notifyDelete = () => toast.success("Пользователь успешно удален!");
+
   const { register, handleSubmit } = useForm<TEditUserSchema>({ resolver: zodResolver(editUserSchema) });
 
   const onSubmit = async (formData: TEditUserSchema) => {
     await UserService.update(data.id, formData as IUserResponse);
+    notify();
   }
 
   const onDelete = async () => {
     await UserService.delete(Number(data.id));
+    notifyDelete();
   }
 
 
@@ -108,6 +116,11 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
           />
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );

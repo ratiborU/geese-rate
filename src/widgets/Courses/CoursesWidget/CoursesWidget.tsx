@@ -5,16 +5,15 @@ import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, renderCels } from "./CoursesWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import styles from "./coursesWidget.module.css"
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
   const { data } = props
   return (
     <>
-      <LinkButton className={styles.button} text={"Добавить предмет"} to={`/admin/courses/create?institute=${id}`} />
+      <LinkButton className={styles.button} text={"Добавить предмет"} to={`/admin/courses/create?institute=${id || ''}`} />
       <Table
         headerLabels={headerLabels}
         tableName={tableName}

@@ -11,8 +11,10 @@ import { InstituteService } from '../../../services/instituteService';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import { CourseService } from '../../../services/courseService';
-import { useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const createLessonSchema = z.object({
@@ -29,8 +31,8 @@ const createLessonSchema = z.object({
 type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const CreateCouplesWidget = () => {
-  const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const notify = () => toast.success("Пара успешно создана!");
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
@@ -61,8 +63,8 @@ const CreateCouplesWidget = () => {
   });
 
   const onSubmit = async (data: TCreateLessonSchema) => {
-    console.log(data);
     await CoupleService.create(data as unknown as TCreateLessonSchema);
+    notify();
   }
 
   if (usersIsLoading || institutesIsLoading || coursesIsLoading) {
@@ -161,6 +163,11 @@ const CreateCouplesWidget = () => {
           }}
         />
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
       <img className={styles.image} src={people} alt="" />
     </div>
   );
