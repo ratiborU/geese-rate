@@ -17,22 +17,23 @@ export type IAuthRefreshRequest = {
 };
 
 export const AuthService = {
-    async login(data: IAuthRequest) {
-        const response = await $https.post(`/token/`, data);
-        UserSecretStorageService.save(response.data);
-    },
+  async login(data: IAuthRequest) {
+    const response = await $https.post(`/token/`, data);
+    UserSecretStorageService.save(response.data);
+    return response.data;
+  },
 
-    async refresh() {
-        const response = await $https.post(`/token/refresh/`, {
-            refresh: UserSecretStorageService.get()?.refresh,
-        });
-        UserSecretStorageService.save(response.data);
-    },
+  async refresh() {
+    const response = await $https.post(`/token/refresh/`, {
+      refresh: UserSecretStorageService.get()?.refresh,
+    });
+    UserSecretStorageService.save(response.data);
+  },
 
-    async logout() {
-        await $https.post(`/auth/logout`, {
-            refresh_token: UserSecretStorageService.get()?.refresh,
-        });
-        UserSecretStorageService.clear();
-    },
+  async logout() {
+    await $https.post(`/auth/logout`, {
+      refresh_token: UserSecretStorageService.get()?.refresh,
+    });
+    UserSecretStorageService.clear();
+  },
 };

@@ -1,0 +1,35 @@
+.block {
+  margin-left: 250px;
+}
+
+/* хз что в дизайне будет потом нужно будет исправить */
+.form {
+  display: flex;
+  /* flex-direction: column; */
+  width: 900px;
+  /* justify-content: left; */
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons {
+  display: flex;
+  gap: 30px;
+}
+
+.image {
+  position: absolute;
+  bottom: 0px;
+  right: 140px;
+  z-index: -1;
+}
+
+.inputNone {
+  display: none;
+}
