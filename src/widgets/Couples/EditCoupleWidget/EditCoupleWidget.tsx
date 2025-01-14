@@ -120,7 +120,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           inputProps={{
             id: 'create-course-name',
             ...register('date'),
-            type: "text",
+            type: "date",
             placeholder: 'Введите дату 2025-01-20...',
             autoComplete: "new-password",
             defaultValue: data.date,
@@ -131,7 +131,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           inputProps={{
             id: 'create-course-name',
             ...register('time'),
-            type: "text",
+            type: "time",
             placeholder: 'Введите время 12:00:00...',
             autoComplete: "new-password",
             defaultValue: data.time
