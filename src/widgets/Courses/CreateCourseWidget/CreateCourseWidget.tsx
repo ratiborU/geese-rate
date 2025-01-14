@@ -14,6 +14,8 @@ import { InstituteService } from '../../../services/instituteService';
 import { useSearchParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import { LocalStorageService } from '../../../lib/helpers/localStorageService';
+import { useUserContext } from '../../../providers/UserContextProvider/hooks/useUserContext';
 
 
 const createUserSchema = z.object({
@@ -28,22 +30,29 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 const CreateCourseWidget = () => {
   // const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const { user } = useUserContext();
   const notify = () => toast.success("Предмет успешно создан!");
+  // const user: IUserResponse | null = LocalStorageService.get('user');
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
     queryFn: async () => {
+      if (user?.role == 'teacher') {
+        const users = await UserService.getOne(Number(user.id));
+        return [{ value: users.id, text: users.first_name }];
+      }
       const users = await UserService.getAll()
-      return users.map(x => ({ value: x.id, text: x.first_name }));
+      return users.filter(x => x.role != 'admin').map(x => ({ value: x.id, text: x.first_name }));
     },
-    queryKey: ["userOptions"],
+    queryKey: ["userOptions", user],
     staleTime: Infinity,
   });
 
   const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
     queryFn: async () => {
-      const users = await InstituteService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
+
+      const institutes = await InstituteService.getAll()
+      return institutes.map(x => ({ value: x.id, text: x.name }));
     },
     queryKey: ["instituteOptions"],
     staleTime: Infinity,

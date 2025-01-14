@@ -14,6 +14,8 @@ import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import { LocalStorageService } from '../../../lib/helpers/localStorageService';
+import { useUserContext } from '../../../providers/UserContextProvider/hooks/useUserContext';
 
 const createLessonSchema = z.object({
   institute: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -30,16 +32,22 @@ type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
   const { data } = props;
+  // const user: IUserResponse | null = LocalStorageService.get('user');
+  const { user } = useUserContext();
   const notify = () => toast.success("Пара успешно изменена!");
   const notifyDelete = () => toast.success("Пара успешно удалена!");
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
   const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
     queryFn: async () => {
+      if (user?.role == 'teacher') {
+        const users = await UserService.getOne(Number(user.id));
+        return [{ value: users.id, text: users.first_name }];
+      }
       const users = await UserService.getAll()
-      return users.map(x => ({ value: x.id, text: x.first_name }));
+      return users.filter(x => x.role != 'admin').map(x => ({ value: x.id, text: x.first_name }));
     },
-    queryKey: ["userOptions"],
+    queryKey: ["userOptions", user],
     staleTime: Infinity,
   });
 

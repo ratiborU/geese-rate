@@ -8,6 +8,7 @@ import { AuthService } from '../../services/authService';
 import { UserService } from '../../services/userService';
 import { LocalStorageService } from '../../lib/helpers/localStorageService';
 import { useAuthSetterContext } from '../../providers/AuthContextProvider/hooks/useAuthSetterContext';
+import { useUserSetterContext } from '../../providers/UserContextProvider/hooks/useUserSetterContext';
 
 const loginSchema = z.object({
   username: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -21,6 +22,7 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
   const navigate = useNavigate();
   const location = useLocation();
   const setAuth = useAuthSetterContext();
+  const setUser = useUserSetterContext()
   const { register, handleSubmit } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data: TLoginSchema) => {
@@ -34,11 +36,13 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
     if (user.role == 'admin') {
       setAuth.setIsAuth(true);
       setAuth.setRole('admin');
+      setUser.setUser(user);
       navigate('/admin', { state: { from: location }, replace: true });
     }
     if (user.role == 'teacher') {
       setAuth.setIsAuth(true);
       setAuth.setRole('teacher');
+      setUser.setUser(user);
       navigate('/teacher', { state: { from: location }, replace: true });
     }
   }
