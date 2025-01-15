@@ -7,8 +7,56 @@
   height: 80px;
   font-size: 20px;
   transition: 0.1s ease;
+  position: relative;
 }
 
 .button:hover {
   background-color: #0F2B5E;
+}
+
+/* Анимация круга загрузки */
+.loader {
+  position: absolute;
+  top: 20px;
+  left: 140px;
+  width: 40px;
+}
+
+.circularLoader {
+  animation: rotate 2s linear infinite;
+}
+
+.loaderPath {
+  fill: none;
+  stroke: white;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-dasharray: 10, 10;
+  animation: animate-stroke 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-stroke {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke: white;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+    stroke: white;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
+    stroke: white;
+  }
 }

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import styles from './createUserWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IUserRequest, UserService } from '../../../services/userService';
+import { IUserRequest } from '../../../services/userService';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Inputs/Input/Input';
@@ -10,6 +10,7 @@ import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCreateUserMutation } from '../../../hooks/users/useCreateUserMutation';
 
 
 const createUserSchema = z.object({
@@ -29,15 +30,23 @@ const CreateUserWidget = () => {
     { value: 'admin', text: 'Администратор' },
     { value: 'teacher', text: 'Преподаватель' }
   ]
-
   const notify = () => toast.success("Пользователь успешно создан");
-
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (data: TCreateUserSchema) => {
-    await UserService.create(data as unknown as IUserRequest);
+    await createUser(data as unknown as IUserRequest);
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const onSuccess = () => {
     notify();
   }
+
+  const { isPending, createUser } = useCreateUserMutation({ onSuccess, onError })
 
   return (
     <div className={styles.block}>
@@ -74,8 +83,10 @@ const CreateUserWidget = () => {
             autoComplete: "new-password"
           }}
         />
+        {/* пустышки */}
         <input value={'lastname'} className={styles.inputNone} type="text" {...register('last_name')} />
         <input value={'no@mail.ru'} className={styles.inputNone} type="text" {...register('email')} />
+
         <SelectInput
           label='Роль'
           selectProps={{
@@ -88,6 +99,7 @@ const CreateUserWidget = () => {
         <Button
           text='Создать'
           width={320}
+          isPending={isPending}
           buttonProps={{
             type: 'submit'
           }}

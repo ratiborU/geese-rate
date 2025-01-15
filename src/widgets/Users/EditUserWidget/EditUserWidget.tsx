@@ -3,7 +3,7 @@ import { IUserResponse } from '../../../services/userService';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { UserService } from '../../../services/userService';
+// import { UserService } from '../../../services/userService';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Button from '../../../components/UI/Button/Button';
@@ -11,6 +11,8 @@ import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUpdateUserMutation } from '../../../hooks/users/useUpdateUserMutation';
+import { useDeleteUserMutation } from '../../../hooks/users/useDeleteUserMutation';
 
 const editUserSchema = z.object({
   first_name: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -31,21 +33,36 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
     { value: 'teacher', text: 'Преподаватель' }
   ]
 
-  const notify = () => toast.success("Пользователь успешно изменен!");
-  const notifyDelete = () => toast.success("Пользователь успешно удален!");
+  const notify = (text: string) => toast.success(text);
+  // const notifyDelete = () => toast.success("Пользователь успешно удален!");
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
 
   const { register, handleSubmit } = useForm<TEditUserSchema>({ resolver: zodResolver(editUserSchema) });
 
   const onSubmit = async (formData: TEditUserSchema) => {
-    await UserService.update(data.id, formData as IUserResponse);
-    notify();
+    await updateUser({ ...formData, id: data.id } as IUserResponse);
   }
 
   const onDelete = async () => {
-    await UserService.delete(Number(data.id));
-    notifyDelete();
+    await deleteUser(data.id);
   }
 
+  const onSuccess = () => {
+    notify("Пользователь успешно изменен!");
+  }
+
+  const onSuccessDelete = () => {
+    notify("Пользователь успешно удален!");
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+
+
+  const { isPending, updateUser } = useUpdateUserMutation({ onSuccess, onError })
+  const { isPending: isPendingDelete, deleteUser } = useDeleteUserMutation({ onSuccess: onSuccessDelete, onError })
 
   return (
     <div className={styles.block}>
@@ -102,6 +119,7 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
           <Button
             text='Сохранить'
             width={240}
+            isPending={isPending}
             buttonProps={{
               type: 'submit'
             }}
@@ -109,6 +127,7 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
           <Button
             text='Удалить'
             width={240}
+            isPending={isPendingDelete}
             buttonProps={{
               type: 'button',
               onClick: onDelete

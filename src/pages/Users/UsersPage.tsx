@@ -1,18 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../../services/userService';
-import UsersTable from '../../components/Tables/UsersTable/UsersTable';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import image from '../../assets/institute.png'
 import UsersWidget from '../../widgets/Users/UsersWidget/UsersWidget';
+import { useGetUsersQuery } from '../../hooks/users/useGetUsersQuery';
 
 const UsersPage = () => {
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => await UserService.getAll(),
-    queryKey: ["users"],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetUsersQuery();
 
-  if (isLoading || !data) {
+  if (isFetching || !data) {
     return <>Загрузка...</>
   }
 
@@ -28,7 +22,6 @@ const UsersPage = () => {
         image={image}
       />
       <UsersWidget data={data} />
-      {/* <UsersTable data={data} /> */}
     </div>
   );
 };
