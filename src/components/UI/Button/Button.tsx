@@ -20,7 +20,7 @@ const Button = (props: ButtonProps) => {
       {...buttonProps}
       style={{ width }}
     >
-      {isPending ?
+      {!isPending ?
         <>{text}</> :
         <Loader />
       }

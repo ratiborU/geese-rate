@@ -34,7 +34,6 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
   ]
 
   const notify = (text: string) => toast.success(text);
-  // const notifyDelete = () => toast.success("Пользователь успешно удален!");
   const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
 
   const { register, handleSubmit } = useForm<TEditUserSchema>({ resolver: zodResolver(editUserSchema) });
@@ -58,7 +57,6 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
   const onError = (error: Error) => {
     notifyError(error.message);
   }
-
 
 
   const { isPending, updateUser } = useUpdateUserMutation({ onSuccess, onError })
