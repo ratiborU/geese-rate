@@ -1,27 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IUserResponse } from '../../services/userService.ts';
-import { UserService } from '../../services/userService.ts';
+import { ReviewService } from '../../services/reviewsService';
+import { IReviewResponse } from '../../services/reviewsService';
 
-interface UpdateUserMutationArgs {
+interface UpdateReviewMutationArgs {
   onSuccess: () => void;
   onError: (error: Error) => void;
 }
 
-export const useUpdateUserMutation = (args: UpdateUserMutationArgs) => {
+export const useUpdateReviewMutation = (args: UpdateReviewMutationArgs) => {
   const { onSuccess, onError } = args;
   const client = useQueryClient();
 
   const {
     isPending,
     isError,
-    mutateAsync: updateUser,
+    mutateAsync: updateReview,
   } = useMutation({
-    mutationFn: async (data: IUserResponse) => await UserService.update(data.id, data),
+    mutationFn: async (data: IReviewResponse) => await ReviewService.update(data.id, data),
     onSuccess: () => {
       onSuccess();
 
       client.invalidateQueries({
-        queryKey: ['users'],
+        queryKey: ['reviews'],
         refetchType: 'none'
       });
     },
@@ -30,5 +30,5 @@ export const useUpdateUserMutation = (args: UpdateUserMutationArgs) => {
     },
   });
 
-  return { isPending, isError, updateUser };
+  return { isPending, isError, updateReview };
 };

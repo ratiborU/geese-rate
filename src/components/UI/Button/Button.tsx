@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import styles from './button.module.css'
+import Loader from '../Loader/Loader';
 
 type ButtonProps = {
   buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>,
@@ -19,13 +20,9 @@ const Button = (props: ButtonProps) => {
       {...buttonProps}
       style={{ width }}
     >
-      {!isPending ?
+      {isPending ?
         <>{text}</> :
-        <div className={styles.loader} style={{ left: width / 2 - 20 }}>
-          <svg className={styles.circularLoader} viewBox='25 25 50 50'>
-            <circle className={styles.loaderPath} cx='50' cy='50' r='20' fill="none"></circle>
-          </svg>
-        </div>
+        <Loader />
       }
 
     </button>

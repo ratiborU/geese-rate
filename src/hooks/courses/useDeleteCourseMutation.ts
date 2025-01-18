@@ -1,27 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IUserResponse } from '../../services/userService.ts';
-import { UserService } from '../../services/userService.ts';
+import { CourseService } from '../../services/courseService';
 
-interface UpdateUserMutationArgs {
+interface DeleteCourseMutationArgs {
   onSuccess: () => void;
   onError: (error: Error) => void;
 }
 
-export const useUpdateUserMutation = (args: UpdateUserMutationArgs) => {
+export const useDeleteCourseMutation = (args: DeleteCourseMutationArgs) => {
   const { onSuccess, onError } = args;
   const client = useQueryClient();
 
   const {
     isPending,
     isError,
-    mutateAsync: updateUser,
+    mutateAsync: deleteCourse,
   } = useMutation({
-    mutationFn: async (data: IUserResponse) => await UserService.update(data.id, data),
+    mutationFn: async (id: string) => await CourseService.delete(Number(id)),
     onSuccess: () => {
       onSuccess();
 
       client.invalidateQueries({
-        queryKey: ['users'],
+        queryKey: ['courses'],
         refetchType: 'none'
       });
     },
@@ -30,5 +29,5 @@ export const useUpdateUserMutation = (args: UpdateUserMutationArgs) => {
     },
   });
 
-  return { isPending, isError, updateUser };
+  return { isPending, isError, deleteCourse };
 };

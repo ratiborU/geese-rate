@@ -3,6 +3,8 @@ import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import { UserService } from "../../../services/userService";
 import { InstituteService } from "../../../services/instituteService";
 import { ICourseResponse } from "../../../services/courseService";
+import { useGetOneUserQuery } from "../../../hooks/users/useGetOneUserQuery";
+import Loader from "../../../components/UI/Loader/Loader";
 
 export const tableName = 'Institutes';
 
@@ -39,18 +41,12 @@ export const renderCels = [
     return <>{data?.name}</>
   },
   (item: ICourseResponse) => {
-    const { data, isLoading, error } = useQuery({
-      queryFn: async () => {
-        const institute = await UserService.getOne(Number(item.teacher));
-        return institute
-      },
-      queryKey: ["user", item.teacher],
-    });
-    if (isLoading) {
-      return 'Загрузка...'
+    const { data, isFetching, error } = useGetOneUserQuery(Number(item.teacher));
+    if (isFetching) {
+      return <Loader color={'#000000'} />
     }
     if (error) {
-      return 'No data'
+      return '-'
     }
     return <>{data?.first_name} </>
   },
