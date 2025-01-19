@@ -1,18 +1,13 @@
 import { useParams } from "react-router-dom";
 import EditCouplesWidget from "../../widgets/Couples/EditCoupleWidget/EditCoupleWidget";
-import { useQuery } from "@tanstack/react-query";
 import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
-import { CoupleService } from "../../services/coupleService";
+import { useGetOneCoupleQuery } from "../../hooks/couples/useGetOneCoupleQuery";
 
 const EditCouplesPage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => await CoupleService.getOne(Number(id)),
-    queryKey: ["couple", id],
-    staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetOneCoupleQuery(Number(id));
 
-  if (isLoading || !data) {
+  if (isFetching || !data) {
     return <>Загрузка...</>
   }
 

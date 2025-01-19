@@ -1,23 +1,15 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { ReviewService } from '../../services/reviewsService';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import image from '../../assets/institute.png'
 import CouplesReviewWidget from '../../widgets/Couples/CouplesReviewWidget/CouplesReviewWidget';
+import { useGetReviewsCoupleQuery } from '../../hooks/reviews/useGetReviesCouple';
 
 
 const CoupleReviewPage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => {
-      const couples = await ReviewService.getAll()
-      return couples.filter(review => review.lesson == id);
-    },
-    queryKey: ["reviewsByLesson", id],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetReviewsCoupleQuery(Number(id));
 
-  if (isLoading || !data || !id) {
+  if (isFetching || !data || !id) {
     return <>Загрузка...</>
   }
 

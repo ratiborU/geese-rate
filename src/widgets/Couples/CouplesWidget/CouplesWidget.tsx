@@ -9,6 +9,7 @@ const CouplesWidget = (props: { data: ICoupleResponse[]; }) => {
   const { data } = props
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+
   return (
     <>
       <LinkButton

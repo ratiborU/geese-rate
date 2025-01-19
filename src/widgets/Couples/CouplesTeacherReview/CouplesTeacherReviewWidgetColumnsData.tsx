@@ -1,6 +1,3 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { CoupleService } from "../../../services/coupleService";
-// import { IReviewResponse } from "../../../services/reviewsService";
 import { parseDateTime } from "../../../lib/helpers/parseDateTime";
 import RadioButton from "../../../components/UI/Buttons/RadioButton/RadioButton";
 import { IReviewResponseChecked } from "./checkBoxData";

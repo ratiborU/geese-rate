@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
-import { UserService } from "../../../services/userService";
-import { InstituteService } from "../../../services/instituteService";
-import { CourseService } from "../../../services/courseService";
 import { ICoupleResponse } from "../../../services/coupleService";
 import { parseDate } from "../../../lib/helpers/parseDate";
+import { useGetOneCourseQuery } from "../../../hooks/courses/useGetOneCourseQuery";
+import Loader from "../../../components/UI/Loader/Loader";
+import { useGetOneUserQuery } from "../../../hooks/users/useGetOneUserQuery";
+import { useGetOneInstituteQuery } from "../../../hooks/institutes/useGetOneInstituteQuery";
 
 export const tableName = 'Lessons';
 
@@ -41,50 +41,35 @@ export const renderCels = [
   (item: ICoupleResponse) => <LinkButton to={`/admin/couples/edit/${item.id}`} text='Редактировать' width={240} />,
   (item: ICoupleResponse) => <>{item.topic}</>,
   (item: ICoupleResponse) => {
-    const { data, isLoading, error } = useQuery({
-      queryFn: async () => {
-        const institute = await CourseService.getOne(Number(item.course));
-        return institute
-      },
-      queryKey: ["coursesData", item.course],
-    });
-    if (isLoading) {
-      return 'Загрузка...'
+    const { data, isFetching, error } = useGetOneCourseQuery(Number(item.course));
+
+    if (isFetching) {
+      return <Loader color={'#000000'} />
     }
+
     if (error) {
-      return 'No data'
+      return '-'
     }
+
     return <>{data?.name} </>
   },
   (item: ICoupleResponse) => {
-    const { data, isLoading, error } = useQuery({
-      queryFn: async () => {
-        const institute = await UserService.getOne(Number(item.teacher));
-        return institute
-      },
-      queryKey: ["usersData", item.teacher],
-    });
-    if (isLoading) {
-      return 'Загрузка...'
+    const { data, isFetching, error } = useGetOneUserQuery(Number(item.teacher));
+    if (isFetching) {
+      return <Loader color={'#000000'} />
     }
     if (error) {
-      return 'No data'
+      return '-'
     }
-    return <>{data?.first_name} </>
+    return <>{data?.first_name}</>
   },
   (item: ICoupleResponse) => {
-    const { data, isLoading, error } = useQuery({
-      queryFn: async () => {
-        const institute = await InstituteService.getOne(Number(item.institute));
-        return institute
-      },
-      queryKey: ["institutesData", item.institute],
-    });
-    if (isLoading) {
-      return 'Загрузка...'
+    const { data, isFetching, error } = useGetOneInstituteQuery(Number(item.institute));
+    if (isFetching) {
+      return <Loader color={'#000000'} />
     }
     if (error) {
-      return 'No data'
+      return '-'
     }
     return <>{data?.name}</>
   },

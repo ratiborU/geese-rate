@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { CoupleService } from "../../../services/coupleService";
 import { IReviewResponse } from "../../../services/reviewsService";
 import { parseDateTime } from "../../../lib/helpers/parseDateTime";
+import { useGetOneCoupleQuery } from "../../../hooks/couples/useGetOneCoupleQuery";
+import Loader from "../../../components/UI/Loader/Loader";
 
 export const tableName = 'Lessons';
 
@@ -20,18 +20,13 @@ export const headerLabels = [
 export const renderCels = [
   (text: IReviewResponse) => <>{text.is_anonymous ? '-' : text.user}</>,
   (text: IReviewResponse) => {
-    const { data, isLoading, error } = useQuery({
-      queryFn: async () => {
-        const institute = await CoupleService.getOne(Number(text.lesson));
-        return institute
-      },
-      queryKey: ["couplesData", text.lesson],
-    });
-    if (isLoading) {
-      return 'Загрузка...'
+    const { data, isFetching, error } = useGetOneCoupleQuery(Number(text.lesson));
+
+    if (isFetching) {
+      return <Loader color={'#000000'} />
     }
     if (error) {
-      return 'No data'
+      return '-'
     }
     return <>{data?.topic} </>
   },

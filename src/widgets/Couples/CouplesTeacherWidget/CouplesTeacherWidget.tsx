@@ -10,6 +10,7 @@ import styles from "./couplesTeacherWidget.module.css"
 const CouplesWidget = (props: { data: ICoupleResponse[]; }) => {
   const { data } = props
   const { id } = useParams();
+  // изменить на useContext
   const user: IUserResponse | null = LocalStorageService.get('user');
 
   return (
