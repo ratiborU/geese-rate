@@ -2,18 +2,18 @@ import { z } from 'zod';
 import styles from './editCourseWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ICourseResponse, CourseService } from '../../../services/courseService';
-import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../../../services/userService';
-import { InstituteService } from '../../../services/instituteService';
+import { ICourseResponse } from '../../../services/courseService';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { LocalStorageService } from '../../../lib/helpers/localStorageService';
 import { useUserContext } from '../../../providers/UserContextProvider/hooks/useUserContext';
+import { useGetUsersOptionsQuery } from '../../../hooks/users/useGetUsersOptionsQuery';
+import { useGetInstitutesOptionsQuery } from '../../../hooks/institutes/useGetInstitutesOptions';
+import { useUpdateCourseMutation } from '../../../hooks/courses/useUpdateCourseMutation';
+import { useDeleteCourseMutation } from '../../../hooks/courses/useDeleteCourseMutation';
 
 
 const createUserSchema = z.object({
@@ -28,42 +28,35 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 const EditCourseWidget = (props: { data: ICourseResponse; }) => {
   const { data } = props;
   const { user } = useUserContext();
-  // const user: IUserResponse | null = LocalStorageService.get('user');
-  const notify = () => toast.success("Предмет успешно изменен!");
-  const notifyDelete = () => toast.success("Предмет успешно удален!");
+  const notify = (text: string) => toast.success(text);
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
-  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
-    queryFn: async () => {
-      if (user?.role == 'teacher') {
-        const users = await UserService.getOne(Number(user.id));
-        return [{ value: users.id, text: users.first_name }];
-      }
-      const users = await UserService.getAll()
-      return users.filter(x => x.role != 'admin').map(x => ({ value: x.id, text: x.first_name }));
-    },
-    queryKey: ["userOptions", user],
-    staleTime: Infinity,
-  });
-
-  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
-    queryFn: async () => {
-      const users = await InstituteService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
-    },
-    queryKey: ["instituteOptions"],
-    staleTime: Infinity,
-  });
+  const { data: users, isFetching: usersIsLoading, error: usersError } = useGetUsersOptionsQuery(user?.role || 'teacher', Number(user?.id));
+  const { data: institutes, isFetching: institutesIsLoading, error: institutesError } = useGetInstitutesOptionsQuery();
 
   const onSubmit = async (formData: TCreateUserSchema) => {
-    await CourseService.update(data.id, formData as unknown as TCreateUserSchema);
-    notify();
+    await updateCourse({ ...formData, id: data.id } as ICourseResponse);
   }
 
   const onDelete = async () => {
-    await CourseService.delete(Number(data.id));
-    notifyDelete();
+    await deleteCourse(data.id);
   }
+
+  const onSuccess = () => {
+    notify("Пользователь успешно изменен!");
+  }
+
+  const onSuccessDelete = () => {
+    notify("Пользователь успешно удален!");
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const { isPending, updateCourse } = useUpdateCourseMutation({ onSuccess, onError })
+  const { isPending: isPendingDelete, deleteCourse } = useDeleteCourseMutation({ onSuccess: onSuccessDelete, onError })
 
   if (usersIsLoading || institutesIsLoading) {
     return <>Загрузка...</>
@@ -120,6 +113,7 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
           <Button
             text='Сохранить'
             width={240}
+            isPending={isPending}
             buttonProps={{
               type: 'submit'
             }}
@@ -127,6 +121,7 @@ const EditCourseWidget = (props: { data: ICourseResponse; }) => {
           <Button
             text='Удалить'
             width={240}
+            isPending={isPendingDelete}
             buttonProps={{
               type: 'button',
               onClick: onDelete

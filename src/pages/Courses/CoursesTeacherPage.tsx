@@ -1,40 +1,28 @@
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 // import UsersTable from '../components/UsersTable/UsersTable';
-import { CourseService } from '../../services/courseService';
+// import { CourseService } from '../../services/courseService';
 // import CoursesWidget from '../../widgets/Courses/CoursesWidget/CoursesWidget';
 import { useParams } from 'react-router-dom';
 import CoursesTeacherWidget from '../../widgets/Courses/CoursesTeacherWidget/CoursesTeacherWidget';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
-import { UserService } from '../../services/userService';
+// import { UserService } from '../../services/userService';
 import image from '../../assets/institute.png'
+import { useGetOneUserQuery } from '../../hooks/users/useGetOneUserQuery';
+// import { useGetCoursesInstituteQuery } from '../../hooks/courses/useGetCoursesInstituteQuery';
+import { useGetCoursesTeacherQuery } from '../../hooks/courses/useGetCoursesTeacherQuery';
 
 
 const CoursesTeacherPage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => {
-      const courses = await CourseService.getAll()
-      return courses.filter(course => course.teacher == id);
-    },
-    queryKey: ["coursesTeacher", id],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetCoursesTeacherQuery(id || '')
+  const { data: teacher, isFetching: isLoadingTeacher, error: isntituteError } = useGetOneUserQuery(Number(id));
 
-  const { data: teacher, isLoading: isLoadingTeacher } = useQuery({
-    queryFn: async () => {
-      const teacher = await UserService.getOne(Number(id))
-      return teacher;
-    },
-    queryKey: ["user", id],
-    // staleTime: Infinity,
-  });
-
-  if (isLoading || isLoadingTeacher || !data || !id) {
+  if (isFetching || isLoadingTeacher || !data || !id) {
     return <>Загрузка...</>
   }
 
-  if (error) {
-    return <>{error.message}</>
+  if (error || isntituteError) {
+    return <>{error?.message} {isntituteError?.message}</>
   }
 
   return (

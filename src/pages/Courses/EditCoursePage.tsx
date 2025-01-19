@@ -1,18 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
 import EditCourseWidget from "../../widgets/Courses/EditCourseWidget/EditCourseWidget";
 import { useParams } from "react-router-dom";
-import { CourseService } from "../../services/courseService";
 import TitleWidget from "../../widgets/TitleWidget/TitleWidget";
+import { useGetOneCourseQuery } from "../../hooks/courses/useGetOneCourseQuery";
 
 const EditCoursePage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => await CourseService.getOne(Number(id)),
-    queryKey: ["course", id],
-    staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetOneCourseQuery(Number(id));
 
-  if (isLoading || !data) {
+  if (isFetching || !data) {
     return <>Загрузка...</>
   }
 

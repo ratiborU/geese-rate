@@ -1,40 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 // import UsersTable from '../components/UsersTable/UsersTable';
-import { CourseService } from '../../services/courseService';
+// import { CourseService } from '../../services/courseService';
 import CoursesWidget from '../../widgets/Courses/CoursesWidget/CoursesWidget';
 import { useParams } from 'react-router-dom';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import image from '../../assets/institute.png'
-import { InstituteService } from '../../services/instituteService';
+// import { InstituteService } from '../../services/instituteService';
+import { useGetCoursesInstituteQuery } from '../../hooks/courses/useGetCoursesInstituteQuery';
+import { useGetOneInstituteQuery } from '../../hooks/institutes/useGetOneInstituteQuery';
 
 
 const CoursesPage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => {
-      const courses = await CourseService.getAll()
-      if (!id) {
-        return courses;
-      }
-      return courses.filter(course => course.institute == id);
-    },
-    queryKey: ["courses"],
-    // staleTime: Infinity,
-  });
 
-  const { data: institute, isLoading: instituteIsLoading, error: isntituteError } = useQuery({
-    queryFn: async () => {
-      if (!id) {
-        return null
-      }
-      const courses = await InstituteService.getOne(Number(id))
-      return courses;
-    },
-    queryKey: ["institute", id],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetCoursesInstituteQuery(id || '')
+  const { data: institute, isFetching: instituteIsFetching, error: isntituteError } = useGetOneInstituteQuery(Number(id));
 
-  if (isLoading || instituteIsLoading || !data) {
+  if (isFetching || instituteIsFetching || !data) {
     return <>Загрузка...</>
   }
 
