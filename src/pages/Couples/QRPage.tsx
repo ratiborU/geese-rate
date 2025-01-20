@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const QRPage = () => {
   const { id } = useParams();
-  const qrLink = `http://localhost:5173/form/${id}`
+  const qrLink = `${import.meta.env.VITE_FRONTEND_URL}/form/${id}`
 
 
   return (
