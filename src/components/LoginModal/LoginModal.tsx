@@ -4,11 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useLocation, useNavigate } from 'react-router-dom';
 import keyVisual from '../../assets/KeyVisual.png'
-import { AuthService } from '../../services/authService';
 import { UserService } from '../../services/userService';
 import { LocalStorageService } from '../../lib/helpers/localStorageService';
 import { useAuthSetterContext } from '../../providers/AuthContextProvider/hooks/useAuthSetterContext';
 import { useUserSetterContext } from '../../providers/UserContextProvider/hooks/useUserSetterContext';
+import { useLoginMutation } from '../../hooks/useLoginMutation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Button from '../UI/Button/Button';
+
 
 const loginSchema = z.object({
   username: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -25,8 +29,12 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
   const setUser = useUserSetterContext()
   const { register, handleSubmit } = useForm<TLoginSchema>({ resolver: zodResolver(loginSchema) });
 
+  // const notify = (text: string) => toast.success(text);
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
+
   const onSubmit = async (data: TLoginSchema) => {
-    await AuthService.login(data);
+    await login(data)
+    // await AuthService.login(data);
     // 3.14 here
     // просто ужас, страхолюдина, 
     // уничтожить при первой же возможности
@@ -37,15 +45,28 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
       setAuth.setIsAuth(true);
       setAuth.setRole('admin');
       setUser.setUser(user);
+      change(false)
       navigate('/admin', { state: { from: location }, replace: true });
     }
     if (user.role == 'teacher') {
       setAuth.setIsAuth(true);
       setAuth.setRole('teacher');
       setUser.setUser(user);
+      change(false)
       navigate('/teacher', { state: { from: location }, replace: true });
     }
   }
+
+  const onSuccess = () => {
+
+  }
+
+  const onError = (error: Error) => {
+    console.log('error');
+    notifyError(error.message)
+  }
+
+  const { isPending, login } = useLoginMutation({ onSuccess, onError });
 
   if (!isVisible) {
     return <></>
@@ -67,16 +88,29 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
             <input
               className={styles.input}
               {...register('password')}
-              type="text"
+              type="password"
               placeholder='Пароль'
+              autoComplete='new-password'
             />
-            <button className={styles.button} type='submit'>Войти</button>
+            <Button
+              text='Войти'
+              className={styles.button}
+              width={210}
+              isPending={isPending}
+              buttonProps={{
+                type: 'submit'
+              }}
+            />
           </form>
         </div>
 
         <img src={keyVisual} alt="" />
       </div>
-
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
     </>
 
   );
