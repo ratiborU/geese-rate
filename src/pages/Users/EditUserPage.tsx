@@ -1,18 +1,16 @@
 import EditUserWidjet from '../../widgets/Users/EditUserWidget/EditUserWidget';
-import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../../services/userService';
+// import { useQuery } from '@tanstack/react-query';
+// import { UserService } from '../../services/userService';
 import { useParams } from 'react-router-dom';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
+import { useGetOneUserQuery } from '../../hooks/users/useGetOneUserQuery';
 
 const EditUserPage = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => await UserService.getOne(Number(id)),
-    queryKey: ["user", id],
-    staleTime: Infinity,
-  });
+  // при пустой строке id вернет user id 0
+  const { data, isFetching, error } = useGetOneUserQuery(Number(id));
 
-  if (isLoading || !data) {
+  if (isFetching || !data) {
     return <>Загрузка...</>
   }
 

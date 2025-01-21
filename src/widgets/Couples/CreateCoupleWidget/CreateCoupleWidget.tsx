@@ -2,19 +2,19 @@ import { z } from 'zod';
 import styles from './createCouplesWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CoupleService } from '../../../services/coupleService';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
-import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../../../services/userService';
-import { InstituteService } from '../../../services/instituteService';
 import Button from '../../../components/UI/Button/Button';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
-import { CourseService } from '../../../services/courseService';
 import { useSearchParams } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUserContext } from '../../../providers/UserContextProvider/hooks/useUserContext';
+import { useGetUsersOptionsQuery } from '../../../hooks/users/useGetUsersOptionsQuery';
+import { useGetInstitutesOptionsQuery } from '../../../hooks/institutes/useGetInstitutesOptions';
+import { useGetCoursesOptionsQuery } from '../../../hooks/courses/useGetCoursesOptions';
+import { useCreateCoupleMutation } from '../../../hooks/couples/useCreateCoupleMutation';
 
 
 const createLessonSchema = z.object({
@@ -32,40 +32,29 @@ type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const CreateCouplesWidget = () => {
   const [searchParams] = useSearchParams();
-  const notify = () => toast.success("Пара успешно создана!");
+  const { user } = useUserContext();
+  const notify = (text: string) => toast.success(text);
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
+
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
-  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
-    queryFn: async () => {
-      const users = await UserService.getAll()
-      return users.map(x => ({ value: x.id, text: x.first_name }));
-    },
-    queryKey: ["userOptions"],
-    staleTime: Infinity,
-  });
-
-  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
-    queryFn: async () => {
-      const users = await InstituteService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
-    },
-    queryKey: ["instituteOptions"],
-    staleTime: Infinity,
-  });
-
-  const { data: courses, isLoading: coursesIsLoading, error: coursesError } = useQuery({
-    queryFn: async () => {
-      const users = await CourseService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
-    },
-    queryKey: ["courseOptions"],
-    staleTime: Infinity,
-  });
+  const { data: users, isFetching: usersIsLoading, error: usersError } = useGetUsersOptionsQuery(user?.role || 'teacher', Number(user?.id));
+  const { data: institutes, isFetching: institutesIsLoading, error: institutesError } = useGetInstitutesOptionsQuery();
+  const { data: courses, isFetching: coursesIsLoading, error: coursesError } = useGetCoursesOptionsQuery();
 
   const onSubmit = async (data: TCreateLessonSchema) => {
-    await CoupleService.create(data as unknown as TCreateLessonSchema);
-    notify();
+    await createCouple(data);
   }
+
+  const onSuccess = () => {
+    notify("Предмет успешно создан!");
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const { isPending, createCouple } = useCreateCoupleMutation({ onSuccess, onError })
 
   if (usersIsLoading || institutesIsLoading || coursesIsLoading) {
     return <>Загрузка...</>
@@ -158,6 +147,7 @@ const CreateCouplesWidget = () => {
         <Button
           text='Создать'
           width={320}
+          isPending={isPending}
           buttonProps={{
             type: 'submit'
           }}

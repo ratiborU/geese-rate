@@ -4,20 +4,19 @@ import { IReviewResponse } from '../../../services/reviewsService';
 import { tableName, headerLabels, renderCels } from "./CouplesTeacherReviewWidgetColumnsData";
 import styles from "./couplesTeacherReviewWidget.module.css"
 import { exportExcel } from '../../../lib/helpers/exportExcel';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getDataWithCheckboxes } from './checkBoxData';
 
 
 
 const CouplesTeacherReviewWidget = (props: { data: IReviewResponse[]; }) => {
-  const { data } = props
-  // const { id } = useParams();
-
+  const { data } = props;
+  const dataCheckboxes = getDataWithCheckboxes(data);
   const notify = () => toast.success("Файл успешно создан!");
 
   const onClick = () => {
-    exportExcel(data, 'посещаемость');
+    exportExcel(dataCheckboxes.filter(x => x.checked == true), 'посещаемость');
     notify();
   }
 
@@ -34,7 +33,7 @@ const CouplesTeacherReviewWidget = (props: { data: IReviewResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        data={dataCheckboxes}
       />
       <ToastContainer
         position="bottom-right"

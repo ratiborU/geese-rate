@@ -2,18 +2,19 @@ import { z } from 'zod';
 import styles from './editCouplesWidget.module.css'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CourseService } from '../../../services/courseService';
-import { CoupleService, ICoupleResponse } from '../../../services/coupleService';
-import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../../../services/userService';
-import { InstituteService } from '../../../services/instituteService';
+import { ICoupleResponse } from '../../../services/coupleService';
 import Button from '../../../components/UI/Button/Button';
 import SelectInput from '../../../components/UI/Inputs/SelectInput/SelectInput';
 import Input from '../../../components/UI/Inputs/Input/Input';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUserContext } from '../../../providers/UserContextProvider/hooks/useUserContext';
+import { useGetUsersOptionsQuery } from '../../../hooks/users/useGetUsersOptionsQuery';
+import { useGetInstitutesOptionsQuery } from '../../../hooks/institutes/useGetInstitutesOptions';
+import { useGetCoursesOptionsQuery } from '../../../hooks/courses/useGetCoursesOptions';
+import { useUpdateCoupleMutation } from '../../../hooks/couples/useUpdateCoupleMutation';
+import { useDeleteCoupleMutation } from '../../../hooks/couples/useDeleteCoupleMutation';
 
 const createLessonSchema = z.object({
   institute: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -30,46 +31,37 @@ type TCreateLessonSchema = z.infer<typeof createLessonSchema>;
 
 const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
   const { data } = props;
-  const notify = () => toast.success("Пара успешно изменена!");
-  const notifyDelete = () => toast.success("Пара успешно удалена!");
+  const { user } = useUserContext();
+  const notify = (text: string) => toast.success(text);
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit } = useForm<TCreateLessonSchema>({ resolver: zodResolver(createLessonSchema) });
 
-  const { data: users, isLoading: usersIsLoading, error: usersError } = useQuery({
-    queryFn: async () => {
-      const users = await UserService.getAll()
-      return users.map(x => ({ value: x.id, text: x.first_name }));
-    },
-    queryKey: ["userOptions"],
-    staleTime: Infinity,
-  });
+  const { data: users, isFetching: usersIsLoading, error: usersError } = useGetUsersOptionsQuery(user?.role || 'teacher', Number(user?.id));
+  const { data: institutes, isFetching: institutesIsLoading, error: institutesError } = useGetInstitutesOptionsQuery();
+  const { data: courses, isFetching: coursesIsLoading, error: coursesError } = useGetCoursesOptionsQuery();
 
-  const { data: institutes, isLoading: institutesIsLoading, error: institutesError } = useQuery({
-    queryFn: async () => {
-      const users = await InstituteService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
-    },
-    queryKey: ["instituteOptions"],
-    staleTime: Infinity,
-  });
-
-  const { data: courses, isLoading: coursesIsLoading, error: coursesError } = useQuery({
-    queryFn: async () => {
-      const users = await CourseService.getAll()
-      return users.map(x => ({ value: x.id, text: x.name }));
-    },
-    queryKey: ["courseOptions"],
-    staleTime: Infinity,
-  });
-
-  const onSubmit = async (data: TCreateLessonSchema) => {
-    await CoupleService.create(data as unknown as TCreateLessonSchema);
-    notify();
+  const onSubmit = async (formData: TCreateLessonSchema) => {
+    await updateCouple({ ...formData, id: data.id } as ICoupleResponse);
   }
 
   const onDelete = async () => {
-    await CoupleService.delete(Number(data.id));
-    notifyDelete();
+    await deleteCouple(data.id);
   }
+
+  const onSuccess = () => {
+    notify("Пользователь успешно изменен!");
+  }
+
+  const onSuccessDelete = () => {
+    notify("Пользователь успешно удален!");
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const { isPending, updateCouple } = useUpdateCoupleMutation({ onSuccess, onError })
+  const { isPending: isPendingDelete, deleteCouple } = useDeleteCoupleMutation({ onSuccess: onSuccessDelete, onError })
 
   if (usersIsLoading || institutesIsLoading || coursesIsLoading) {
     return <>Загрузка...</>
@@ -120,7 +112,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           inputProps={{
             id: 'create-course-name',
             ...register('date'),
-            type: "text",
+            type: "date",
             placeholder: 'Введите дату 2025-01-20...',
             autoComplete: "new-password",
             defaultValue: data.date,
@@ -131,7 +123,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           inputProps={{
             id: 'create-course-name',
             ...register('time'),
-            type: "text",
+            type: "time",
             placeholder: 'Введите время 12:00:00...',
             autoComplete: "new-password",
             defaultValue: data.time
@@ -168,6 +160,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           <Button
             text='Сохранить'
             width={240}
+            isPending={isPending}
             buttonProps={{
               type: 'submit'
             }}
@@ -175,6 +168,7 @@ const EditCouplesWidget = (props: { data: ICoupleResponse; }) => {
           <Button
             text='Удалить'
             width={240}
+            isPending={isPendingDelete}
             buttonProps={{
               type: 'button',
               onClick: onDelete

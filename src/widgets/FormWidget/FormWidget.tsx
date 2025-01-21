@@ -4,10 +4,13 @@ import Button from '../../components/UI/Button/Button';
 import Textarea from '../../components/UI/Inputs/Textarea/Teaxtarea';
 import { z } from 'zod';
 import RadioButton from '../../components/UI/Buttons/RadioButton/RadioButton';
-import { ReviewService } from '../../services/reviewsService';
+// import { ReviewService } from '../../services/reviewsService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { LocalStorageService } from '../../lib/helpers/localStorageService';
+import { useCreateReviewMutation } from '../../hooks/reviews/useCreateReviewMutation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const createReviewSchema = z.object({
   user: z.string().min(1, "!"),
@@ -23,6 +26,8 @@ type TCreateReviewSchema = z.infer<typeof createReviewSchema>;
 
 const FormWidget = (props: { id: string; }) => {
   const { id } = props;
+  const notify = () => toast.success("Отзыв успешно создан!");
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit, setValue } = useForm<TCreateReviewSchema>({ resolver: zodResolver(createReviewSchema) });
 
   const favorites = [false, false, false, false, false, false, false]
@@ -48,12 +53,23 @@ const FormWidget = (props: { id: string; }) => {
 
   const onSubmit = async (data: TCreateReviewSchema) => {
     data.advantages = favoriteListValues.filter((_, i) => favorites[i])
-    await ReviewService.create(data as unknown as TCreateReviewSchema);
+    await createReview(data);
+    // await ReviewService.create(data as unknown as TCreateReviewSchema);
     LocalStorageService.save(`rate ${id}`, true);
     LocalStorageService.save(`FIO`, data.user)
     LocalStorageService.save(`isAnonymous`, data.is_anonymous)
     location.reload();
   }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const onSuccess = () => {
+    notify();
+  }
+
+  const { isPending, createReview } = useCreateReviewMutation({ onSuccess, onError });
 
   // const reset = async () => {
   //   LocalStorageService.remove(`rate ${id}`);
@@ -174,11 +190,17 @@ const FormWidget = (props: { id: string; }) => {
 
         <Button
           text='Отправить'
+          isPending={isPending}
           buttonProps={{
             type: 'submit'
           }}
         />
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        limit={8}
+      />
     </div>
   );
 };

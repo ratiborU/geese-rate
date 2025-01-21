@@ -5,10 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import people from '../../../assets/people-fill-svgrepo-com 1.svg'
 import Input from '../../../components/UI/Inputs/Input/Input';
 import Button from '../../../components/UI/Button/Button';
-import { IInstituteResponse, InstituteService } from '../../../services/instituteService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useUpdateInstituteMutation } from '../../../hooks/institutes/useUpdateInstituteMutation';
+import { useDeleteInstituteMutation } from '../../../hooks/institutes/useDeleteInstituteMutation';
+import { IInstituteResponse } from '../../../services/instituteService';
 
 const createUserSchema = z.object({
   name: z.string().min(1, "Это поле обязательно для заполнения"),
@@ -20,20 +21,33 @@ type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
   const { data } = props;
-  const notify = () => toast.success("Институт успешно изменен!");
-  const notifyDelete = () => toast.success("Институт успешно удален!");
+  const notify = (text: string) => toast.success(text);
+  const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
 
   const { register, handleSubmit } = useForm<TCreateUserSchema>({ resolver: zodResolver(createUserSchema) });
 
   const onSubmit = async (formData: TCreateUserSchema) => {
-    await InstituteService.update(data.id, formData as unknown as TCreateUserSchema);
-    notify();
+    await updateInstitute({ ...formData, id: data.id } as IInstituteResponse);
   }
 
   const onDelete = async () => {
-    await InstituteService.delete(data.id);
-    notifyDelete();
+    await deleteInstitute(data.id)
   }
+
+  const onSuccess = () => {
+    notify("Пользователь успешно изменен!");
+  }
+
+  const onSuccessDelete = () => {
+    notify("Пользователь успешно удален!");
+  }
+
+  const onError = (error: Error) => {
+    notifyError(error.message);
+  }
+
+  const { isPending, updateInstitute } = useUpdateInstituteMutation({ onSuccess, onError })
+  const { isPending: isPendingDelete, deleteInstitute } = useDeleteInstituteMutation({ onSuccess: onSuccessDelete, onError })
 
   return (
     <div className={styles.block}>
@@ -72,6 +86,7 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           <Button
             text='Сохранить'
             width={240}
+            isPending={isPending}
             buttonProps={{
               type: 'submit'
             }}
@@ -79,6 +94,7 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           <Button
             text='Удалить'
             width={240}
+            isPending={isPendingDelete}
             buttonProps={{
               type: 'button',
               onClick: onDelete

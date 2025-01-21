@@ -1,36 +1,19 @@
-// import React from 'react';
 import CouplesTeacherReviewWidget from '../../widgets/Couples/CouplesTeacherReview/CouplesTeacherReview';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-// import { CoupleService } from '../../services/coupleService';
-import { ReviewService } from '../../services/reviewsService';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import image from '../../assets/institute people.png'
-import { CourseService } from '../../services/courseService';
+import { useGetReviewsCoupleQuery } from '../../hooks/reviews/useGetReviesCouple';
+import { useGetOneCourseQuery } from '../../hooks/courses/useGetOneCourseQuery';
 
 
 const CoupleTeacherReviewPage = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => {
-      const couples = await ReviewService.getAll()
-      return couples.filter(review => review.lesson == id);
-    },
-    queryKey: ["reviewsByLesson", id],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetReviewsCoupleQuery(Number(id));
 
-  const { data: course, isLoading: courseIsLoading, error: courseError } = useQuery({
-    queryFn: async () => {
-      const couples = await CourseService.getOne(Number(searchParams.get('course')))
-      return couples;
-    },
-    queryKey: ["course", searchParams.get('course')],
-    // staleTime: Infinity,
-  });
+  const { data: course, isFetching: courseIsLoading, error: courseError } = useGetOneCourseQuery(Number(searchParams.get('course')));
 
-  if (isLoading || courseIsLoading || !data || !course || !id) {
+  if (isFetching || courseIsLoading || !data || !course || !id) {
     return <>Загрузка...</>
   }
 

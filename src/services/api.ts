@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { UserSecretStorageService } from '../lib/helpers/userSecretStorageService';
-import { AuthService } from './authService';
-
+// import { UserSecretStorageService } from '../lib/helpers/userSecretStorageService';
+// import { AuthService } from './authService';
+// console.log(import.meta.env);
 const $http = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api'
+  // baseURL: 'http://127.0.0.1:8000/api'
+  // baseURL: process.env.REACT_APP_BACKEND_URL
+  baseURL: import.meta.env.VITE_BACKEND_URL
 });
 
 // $http.interceptors.response.use(

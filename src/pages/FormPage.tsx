@@ -5,15 +5,6 @@ import { useParams } from 'react-router-dom';
 
 const FormPage = () => {
   const { id } = useParams();
-  // const { data, isLoading, error } = useQuery({
-  //   queryFn: async () => await CourseService.getOne(Number(id)),
-  //   queryKey: ["course", id],
-  //   // staleTime: Infinity,
-  // });
-
-  // if (isLoading || !data || !id) {
-  //   return <>Загрузка...</>
-  // }
 
   if (!id) {
     return <>Произошла ошибка</>

@@ -23,6 +23,8 @@ import QRPage from "./pages/Couples/QRPage"
 import CouplesTeacherPage from "./pages/Couples/CouplesTeacherPage"
 import CoupleTeacherReviewPage from "./pages/Couples/CoupleTeacherReviewPage"
 
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
+
 
 const queryClient = new QueryClient()
 
@@ -32,31 +34,31 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={<ProtectedRoute role='admin' element={<AdminPage />} />} />
 
-          <Route path="/admin/users" element={<UsersPage />} />
-          <Route path="/admin/users/create" element={<CreateUserPage />} />
-          <Route path="/admin/users/edit/:id" element={<EditUserPage />} />
+          <Route path="/admin/users" element={<ProtectedRoute role='admin' element={<UsersPage />} />} />
+          <Route path="/admin/users/create" element={<ProtectedRoute role='admin' element={<CreateUserPage />} />} />
+          <Route path="/admin/users/edit/:id" element={<ProtectedRoute role='admin' element={<EditUserPage />} />} />
 
-          <Route path="/admin/institutes" element={<InstitutesPage />} />
-          <Route path="/admin/institutes/create" element={<CreateIstitutePage />} />
-          <Route path="/admin/institutes/edit/:id" element={<EditInstitutePage />} />
+          <Route path="/admin/institutes" element={<ProtectedRoute role='admin' element={<InstitutesPage />} />} />
+          <Route path="/admin/institutes/create" element={<ProtectedRoute role='admin' element={<CreateIstitutePage />} />} />
+          <Route path="/admin/institutes/edit/:id" element={<ProtectedRoute role='admin' element={<EditInstitutePage />} />} />
 
-          <Route path="/admin/courses/:id" element={<CoursesPage />} />
-          <Route path="/admin/courses" element={<CoursesPage />} />
-          <Route path="/admin/courses/teacher/:id" element={<CoursesTeacherPage />} />
-          <Route path="/admin/courses/create" element={<CreateCoursePage />} />
-          <Route path="/admin/courses/edit/:id" element={<EditCoursePage />} />
+          <Route path="/admin/courses/:id" element={<ProtectedRoute role='admin' element={<CoursesPage />} />} />
+          <Route path="/admin/courses" element={<ProtectedRoute role='admin' element={<CoursesPage />} />} />
+          <Route path="/admin/courses/teacher/:id" element={<ProtectedRoute role='admin' element={<CoursesTeacherPage />} />} />
+          <Route path="/admin/courses/create" element={<ProtectedRoute role='' element={<CreateCoursePage />} />} /> {/*Для админа и препода */}
+          <Route path="/admin/courses/edit/:id" element={<ProtectedRoute role='' element={<EditCoursePage />} />} /> {/*Для админа и препода */}
 
-          <Route path="/admin/couples/:id" element={<CouplesPage />} />
-          <Route path="/admin/couples/review/:id" element={<CoupleReviewPage />} />
-          <Route path="/admin/couples/create" element={<CreateCouplesPage />} />
-          <Route path="/admin/couples/edit/:id" element={<EditCouplesPage />} />
+          <Route path="/admin/couples/:id" element={<ProtectedRoute role='admin' element={<CouplesPage />} />} />
+          <Route path="/admin/couples/review/:id" element={<ProtectedRoute role='admin' element={<CoupleReviewPage />} />} />
+          <Route path="/admin/couples/create" element={<ProtectedRoute role='' element={<CreateCouplesPage />} />} /> {/*Для админа и препода */}
+          <Route path="/admin/couples/edit/:id" element={<ProtectedRoute role='' element={<EditCouplesPage />} />} /> {/*Для админа и препода */}
 
-          <Route path="/teacher" element={<TeacherPage />} />
-          <Route path="/teacher/couples/:id" element={<CouplesTeacherPage />} />
-          <Route path="/teacher/couples/review/:id" element={<CoupleTeacherReviewPage />} />
-          <Route path="/teacher/qr/:id" element={<QRPage />} />
+          <Route path="/teacher" element={<ProtectedRoute role='teacher' element={<TeacherPage />} />} />
+          <Route path="/teacher/couples/:id" element={<ProtectedRoute role='teacher' element={<CouplesTeacherPage />} />} />
+          <Route path="/teacher/couples/review/:id" element={<ProtectedRoute role='teacher' element={<CoupleTeacherReviewPage />} />} />
+          <Route path="/teacher/qr/:id" element={<ProtectedRoute role='teacher' element={<QRPage />} />} />
 
         </Route>
         <Route path="/form/:id" element={<FormPage />} />

@@ -1,19 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { InstituteService } from "../../../services/instituteService";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, renderCels } from "./InstitutesWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
+import { useGetInstitutesQuery } from "../../../hooks/institutes/useGetInstitutesQuery";
 
 import styles from './institutesWidget.module.css'
 
 const InstitutesWidget = () => {
-  const { data, isLoading, error } = useQuery({
-    queryFn: async () => await InstituteService.getAll(),
-    queryKey: ["institutes"],
-    // staleTime: Infinity,
-  });
+  const { data, isFetching, error } = useGetInstitutesQuery();
 
-  if (isLoading || !data) {
+  if (isFetching || !data) {
     return <>Загрузка...</>
   }
 

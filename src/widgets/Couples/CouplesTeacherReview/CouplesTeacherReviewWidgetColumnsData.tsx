@@ -1,52 +1,30 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { CoupleService } from "../../../services/coupleService";
-import { IReviewResponse } from "../../../services/reviewsService";
 import { parseDateTime } from "../../../lib/helpers/parseDateTime";
-
+import RadioButton from "../../../components/UI/Buttons/RadioButton/RadioButton";
+import { IReviewResponseChecked } from "./checkBoxData";
 export const tableName = 'Lessons';
 
 export const headerLabels = [
   '',
+  'Отметка посещаемости',
   'ФИО',
-  // 'Предмет',
-  // 'Оценка',
-  // 'Комментарий',
-  // 'Примущества',
-  // 'Анонимно',
   'Дата',
 ];
 
-export const keys = [
-  'user',
-  'lesson',
-  'rating',
-  'comment',
-  'advantages',
-  'is_anonymous',
-  'created_at',
-];
+
 
 export const renderCels = [
-  (text: IReviewResponse) => <>{text.user}</>,
-  // (text: IReviewResponse) => {
-  //   const { data, isLoading, error } = useQuery({
-  //     queryFn: async () => {
-  //       const institute = await CoupleService.getOne(Number(text.lesson));
-  //       return institute
-  //     },
-  //     queryKey: ["couplesData", text.lesson],
-  //   });
-  //   if (isLoading) {
-  //     return 'Загрузка...'
-  //   }
-  //   if (error) {
-  //     return 'No data'
-  //   }
-  //   return <>{data?.topic} </>
-  // },
-  // (text: IReviewResponse) => <>{text.rating}</>,
-  // (text: IReviewResponse) => <>{text.comment}</>,
-  // (text: IReviewResponse) => <>{text.advantages}</>,
-  // (text: IReviewResponse) => <>{text.is_anonymous ? 'Анонимно' : 'не анонимно'}</>,
-  (text: IReviewResponse) => <>{parseDateTime(text.created_at)}</>,
+  (text: IReviewResponseChecked) => {
+    return <RadioButton
+      inputProps={{
+        type: 'checkbox',
+        defaultChecked: true,
+        onClick: () => text.checked = !text.checked
+      }}
+    />
+  },
+
+  (text: IReviewResponseChecked) => <>{text.user}</>,
+  (text: IReviewResponseChecked) => <>{parseDateTime(text.created_at)}</>,
 ];
+
+
