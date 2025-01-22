@@ -22,6 +22,7 @@ import FormPage from "./pages/FormPage"
 import QRPage from "./pages/Couples/QRPage"
 import CouplesTeacherPage from "./pages/Couples/CouplesTeacherPage"
 import CoupleTeacherReviewPage from "./pages/Couples/CoupleTeacherReviewPage"
+import CoupleStatisticsPage from "./pages/Couples/CoupleStatistics"
 
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin/couples/review/:id" element={<ProtectedRoute role='admin' element={<CoupleReviewPage />} />} />
           <Route path="/admin/couples/create" element={<ProtectedRoute role='' element={<CreateCouplesPage />} />} /> {/*Для админа и препода */}
           <Route path="/admin/couples/edit/:id" element={<ProtectedRoute role='' element={<EditCouplesPage />} />} /> {/*Для админа и препода */}
+          <Route path="/admin/couples/statistics/:id" element={<ProtectedRoute role='' element={<CoupleStatisticsPage />} />} /> {/*Для админа и препода */}
 
           <Route path="/teacher" element={<ProtectedRoute role='teacher' element={<TeacherPage />} />} />
           <Route path="/teacher/couples/:id" element={<ProtectedRoute role='teacher' element={<CouplesTeacherPage />} />} />
