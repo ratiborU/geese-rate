@@ -13,6 +13,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import StarRate from '../../components/UI/Inputs/StarRate/StarRate';
 import { useGetOneCoupleQuery } from '../../hooks/couples/useGetOneCoupleQuery';
+import TableLoader from '../../components/UI/TableLoader/TableLoader';
+import { checkFormAvailable } from '../../lib/helpers/checkFormAvailable';
 
 
 const createReviewSchema = z.object({
@@ -33,7 +35,7 @@ const FormWidget = (props: { id: string; }) => {
   const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit, setValue } = useForm<TCreateReviewSchema>({ resolver: zodResolver(createReviewSchema) });
 
-  const { data } = useGetOneCoupleQuery(Number(id));
+  const { data: couple, isFetching } = useGetOneCoupleQuery(Number(id));
 
   const favorites = [false, false, false, false, false, false, false]
 
@@ -59,7 +61,6 @@ const FormWidget = (props: { id: string; }) => {
   const onSubmit = async (data: TCreateReviewSchema) => {
 
     data.advantages = favoriteListValues.filter((_, i) => favorites[i])
-    console.log(data);
     await createReview(data);
     LocalStorageService.save(`rate ${id}`, true);
     LocalStorageService.save(`FIO`, data.user)
@@ -83,6 +84,11 @@ const FormWidget = (props: { id: string; }) => {
   // }
 
   // LocalStorageService.save(`rate ${id}`, false)
+
+  if (isFetching || !couple) {
+    return <TableLoader />
+  }
+
   if (LocalStorageService.get(`rate ${id}`)) {
     return (
       <>
@@ -98,6 +104,10 @@ const FormWidget = (props: { id: string; }) => {
         <p className={styles.titleThanks}>Спасибо за ваш отзыв!</p>
       </>
     )
+  }
+
+  if (checkFormAvailable(couple?.date, couple?.time)) {
+    return <p className={styles.titleThanks}>Форма закрыта</p>
   }
 
   // const onRateSelect = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -120,7 +130,7 @@ const FormWidget = (props: { id: string; }) => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>{data?.topic}</h1>
+      <h1 className={styles.title}>{couple?.topic}</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input
           label='*Введите ФИО:'

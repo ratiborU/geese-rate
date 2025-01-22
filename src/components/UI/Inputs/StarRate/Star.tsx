@@ -14,7 +14,6 @@ type StarProps = {
 const Star = (props: StarProps) => {
   const { currentRate, hoverRate, selectedRate, changeSelectedRate, changeHoverRate } = props;
 
-  // console.log(props);
   const getStar = () => {
     if (currentRate < selectedRate && hoverRate == 0 && selectedRate != 0) {
       return star

@@ -45,14 +45,13 @@ const Table = (props: TableProps) => {
         </tr>
       </thead>
       <tbody>
-        {...data.sort((a: any, b: any) => Number(a.id) - Number(b.id))
-          .map((x: any) =>
-            <TableRow
-              key={`${tableName} row ${x.id}`} row={x}
-              renderCels={renderCels}
-              tableName={tableName}
-            />
-          )
+        {...data.map((x: any) =>
+          <TableRow
+            key={`${tableName} row ${x.id}`} row={x}
+            renderCels={renderCels}
+            tableName={tableName}
+          />
+        )
         }
       </tbody>
 
