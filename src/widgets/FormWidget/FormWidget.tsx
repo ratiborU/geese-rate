@@ -11,12 +11,15 @@ import { LocalStorageService } from '../../lib/helpers/localStorageService';
 import { useCreateReviewMutation } from '../../hooks/reviews/useCreateReviewMutation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import StarRate from '../../components/UI/Inputs/StarRate/StarRate';
+import { useGetOneCoupleQuery } from '../../hooks/couples/useGetOneCoupleQuery';
+
 
 const createReviewSchema = z.object({
   user: z.string().min(1, "!"),
   lesson: z.string().min(1, "!"),
   rating: z.string().min(1, "!"),
-  comment: z.string().min(1, "!"),
+  comment: z.string(),
   advantages: z.array(z.string()),
   is_anonymous: z.string().min(1, "!").default('False'),
 })
@@ -30,6 +33,8 @@ const FormWidget = (props: { id: string; }) => {
   const notifyError = (text: string) => toast.error(`Произошла ошибка! ${text}`);
   const { register, handleSubmit, setValue } = useForm<TCreateReviewSchema>({ resolver: zodResolver(createReviewSchema) });
 
+  const { data } = useGetOneCoupleQuery(Number(id));
+
   const favorites = [false, false, false, false, false, false, false]
 
   const favoriteList = [
@@ -42,19 +47,20 @@ const FormWidget = (props: { id: string; }) => {
     'Предоставление материалов',
   ]
   const favoriteListValues = [
-    'engaging',
-    'clear',
-    'organized',
-    'interactive',
-    'practical ',
-    'practical ',
-    'practical ',
+    'usefulness',
+    'delivery',
+    'kindness',
+    'interaction',
+    'equipment',
+    'difficulty',
+    'materials',
   ]
 
   const onSubmit = async (data: TCreateReviewSchema) => {
+
     data.advantages = favoriteListValues.filter((_, i) => favorites[i])
+    console.log(data);
     await createReview(data);
-    // await ReviewService.create(data as unknown as TCreateReviewSchema);
     LocalStorageService.save(`rate ${id}`, true);
     LocalStorageService.save(`FIO`, data.user)
     LocalStorageService.save(`isAnonymous`, data.is_anonymous)
@@ -80,21 +86,26 @@ const FormWidget = (props: { id: string; }) => {
   if (LocalStorageService.get(`rate ${id}`)) {
     return (
       <>
-        <div className={styles.block}>
+        {/* <div className={styles.thanksBlock}>
           <p className={styles.title}>Спасибо за ваш отзыв!</p>
-          {/* <Button
+          <Button
             text='Оставить еще'
             buttonProps={{
               onClick: reset
             }}
-          /> */}
-        </div>
+          />
+        </div> */}
+        <p className={styles.titleThanks}>Спасибо за ваш отзыв!</p>
       </>
     )
   }
 
-  const onRateSelect = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-    setValue('rating', e.currentTarget.value);
+  // const onRateSelect = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+  //   setValue('rating', e.currentTarget.value);
+  // }
+
+  const onRateSelect2 = (rate: number) => {
+    setValue('rating', rate.toString());
   }
 
   const onFavoriteSelect = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
@@ -109,27 +120,27 @@ const FormWidget = (props: { id: string; }) => {
 
   return (
     <div className={styles.block}>
-      <h1 className={styles.title}>Голос Студента</h1>
+      <h1 className={styles.title}>{data?.topic}</h1>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label='ФИО'
+          label='*Введите ФИО:'
           inputProps={{
             id: 'create-course-name',
             ...register('user'),
             type: "text",
-            placeholder: 'Введите ваше ФИО(integer)...',
+            placeholder: 'Ваше ФИО(integer)...',
             autoComplete: "new-password",
             defaultValue: LocalStorageService.get(`FIO`) || '',
           }}
         />
+
         <div>
-          <p className={styles.text}>Оцените, пожалуйста, общее впечатление от пары по шкале от 1 до 5, где </p>
-          <p className={styles.text}>1 - пара совсем не понравилась,</p>
-          <p className={styles.text}>5 - очень понравилась</p>
+          <p className={styles.text}>*Общая оценка пары:</p>
+          <StarRate changeRate={onRateSelect2} />
         </div>
 
 
-        <div className={styles.rates}>
+        {/* <div className={styles.rates}>
           {...[...Array(5)].map((_, i) =>
             <RadioButton
               key={`review-rate-${i + 1}`}
@@ -142,24 +153,26 @@ const FormWidget = (props: { id: string; }) => {
               }}
             />
           )}
+        </div> */}
+        <div>
+          <p className={styles.text}>*Что вам понравилось больше всего:</p>
+          <div className={styles.favorites}>
+            {...[...Array(7)].map((_, i) =>
+              <RadioButton
+                key={`review-favorite-${i + 1}`}
+                label={favoriteList[i]}
+                inputProps={{
+                  name: 'favorite',
+                  value: i,
+                  id: `review-favorite-${i + 1}`,
+                  type: 'checkbox',
+                  onClick: onFavoriteSelect
+                }}
+              />
+            )}
+          </div>
         </div>
 
-        <p className={styles.text}>Что вам понравилось больше всего?</p>
-        <div className={styles.favorites}>
-          {...[...Array(7)].map((_, i) =>
-            <RadioButton
-              key={`review-favorite-${i + 1}`}
-              label={favoriteList[i]}
-              inputProps={{
-                name: 'favorite',
-                value: i,
-                id: `review-favorite-${i + 1}`,
-                type: 'checkbox',
-                onClick: onFavoriteSelect
-              }}
-            />
-          )}
-        </div>
 
         <Textarea
           label='Развернутый отзыв'
@@ -171,7 +184,17 @@ const FormWidget = (props: { id: string; }) => {
           }}
         />
 
-        <div>
+        <RadioButton
+          // className={styles.checkbox},
+          label='Остаться анонимным'
+          inputProps={{
+            onClick: onAnonSelect,
+            defaultChecked: LocalStorageService.get(`isAnonymous`) == 'True' || false,
+            type: "checkbox",
+            id: 'isAnonymous',
+          }}
+        />
+        {/* <div>
           <input
             onClick={onAnonSelect}
             defaultChecked={LocalStorageService.get(`isAnonymous`) == 'True' || false}
@@ -180,7 +203,7 @@ const FormWidget = (props: { id: string; }) => {
             id='isAnonymous'
           />
           <label className={styles.label} htmlFor='isAnonymous'> Остаться анонимным</label>
-        </div>
+        </div> */}
 
         {/* Пустышки */}
         <input className={styles.inputNone} type="text" {...register('rating')} />

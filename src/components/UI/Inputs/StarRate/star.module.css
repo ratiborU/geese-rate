@@ -1,0 +1,12 @@
+.starButton {
+  background-color: #F6F6F6;
+  padding: 0 4px;
+}
+
+.starButton img {
+  width: 40px;
+}
+
+.starRate {
+  display: flex;
+}
