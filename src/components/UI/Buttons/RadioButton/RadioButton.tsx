@@ -17,7 +17,7 @@ const RadioButton = (props: InputProps) => {
         type="radio"
         {...inputProps}
       />
-      {label && <label className={styles.label} htmlFor={inputProps?.id}>{label}</label>}
+      {label != undefined && <label className={styles.label} htmlFor={inputProps?.id}>{label}</label>}
     </div>
   );
 };

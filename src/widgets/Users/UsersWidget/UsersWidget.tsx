@@ -1,16 +1,18 @@
 import Table from '../../../components/UI/Table/Table';
-import { IUserResponse } from '../../../services/userService';
+import { useGetUsersQuery } from '../../../hooks/users/useGetUsersQuery';
 import { tableName, headerLabels, renderCels } from "./UsersWidgetColumnsData";
 
 
-const UsersWidget = (props: { data: IUserResponse[]; }) => {
-  const { data } = props;
+const UsersWidget = () => {
+  const { data, isFetching, error } = useGetUsersQuery();
   return (
     <Table
       headerLabels={headerLabels}
       tableName={tableName}
       renderCels={renderCels}
-      data={data}
+      isFetching={isFetching}
+      error={error}
+      data={data || []}
     />
   );
 };

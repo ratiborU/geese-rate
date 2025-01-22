@@ -8,14 +8,6 @@ import styles from './institutesWidget.module.css'
 const InstitutesWidget = () => {
   const { data, isFetching, error } = useGetInstitutesQuery();
 
-  if (isFetching || !data) {
-    return <>Загрузка...</>
-  }
-
-  if (error) {
-    return <>{error.message}</>
-  }
-
   return (
     <>
       <LinkButton className={styles.button} text={"Добавить институт"} to='/admin/institutes/create' />
@@ -23,7 +15,9 @@ const InstitutesWidget = () => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
 

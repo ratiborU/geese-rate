@@ -1,16 +1,15 @@
-// import { useQuery } from "@tanstack/react-query";
-// import CoursesTable from "../../../components/Tables/CursesTable/CursesTable";
-import { ICourseResponse } from "../../../services/courseService";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, renderCels } from "./CoursesWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import styles from "./coursesWidget.module.css"
 import { useParams } from "react-router-dom";
+import { useGetCoursesInstituteQuery } from "../../../hooks/courses/useGetCoursesInstituteQuery";
 
 
-const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
+const CoursesWidget = () => {
   const { id } = useParams();
-  const { data } = props
+  const { data, isFetching, error } = useGetCoursesInstituteQuery(id || '')
+
   return (
     <>
       <LinkButton className={styles.button} text={"Добавить предмет"} to={`/admin/courses/create?institute=${id || ''}`} />
@@ -18,7 +17,9 @@ const CoursesWidget = (props: { data: ICourseResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
 

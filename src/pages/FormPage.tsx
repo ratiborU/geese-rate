@@ -6,12 +6,8 @@ import { useParams } from 'react-router-dom';
 const FormPage = () => {
   const { id } = useParams();
 
-  if (!id) {
-    return <>Произошла ошибка</>
-  }
-
   return (
-    <FormWidget id={id} />
+    <FormWidget id={id || '0'} />
   );
 };
 

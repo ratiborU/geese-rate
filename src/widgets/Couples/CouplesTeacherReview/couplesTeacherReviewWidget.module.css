@@ -3,3 +3,10 @@
   top: 275px;
   right: 60px;
 }
+
+.radioButton {
+  margin: 0 auto;
+  /* margin-left: 20px; */
+  width: 36px;
+  /* border: 1px solid #000; */
+}

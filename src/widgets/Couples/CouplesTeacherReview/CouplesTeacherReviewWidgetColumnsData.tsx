@@ -1,6 +1,8 @@
 import { parseDateTime } from "../../../lib/helpers/parseDateTime";
 import RadioButton from "../../../components/UI/Buttons/RadioButton/RadioButton";
 import { IReviewResponseChecked } from "./checkBoxData";
+import styles from './couplesTeacherReviewWidget.module.css'
+
 export const tableName = 'Lessons';
 
 export const headerLabels = [
@@ -14,13 +16,17 @@ export const headerLabels = [
 
 export const renderCels = [
   (text: IReviewResponseChecked) => {
-    return <RadioButton
-      inputProps={{
-        type: 'checkbox',
-        defaultChecked: true,
-        onClick: () => text.checked = !text.checked
-      }}
-    />
+    return <div className={styles.radioButton}>
+      <RadioButton
+        label=""
+        inputProps={{
+          type: 'checkbox',
+          id: `students checkbox ${text.id}`,
+          defaultChecked: true,
+          onClick: () => text.checked = !text.checked
+        }}
+      />
+    </div>
   },
 
   (text: IReviewResponseChecked) => <>{text.user}</>,
