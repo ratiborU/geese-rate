@@ -18,9 +18,10 @@ export const headerLabels = [
   'Адрес',
   'Аудитория',
   'Дата',
-  'Время',
+  // 'Время',
   'Средний рейтинг',
   'Отзывы',
+  'Статистика',
 ];
 
 export const keys = [
@@ -76,8 +77,9 @@ export const renderCels = [
 
   (item: ICoupleResponse) => <>{item.address}</>,
   (item: ICoupleResponse) => <>{item.room}</>,
-  (item: ICoupleResponse) => <>{parseDate(item.date)}</>,
-  (item: ICoupleResponse) => <>{item.time}</>,
+  (item: ICoupleResponse) => <>{parseDate(item.date)}, {item.time}</>,
+  // (item: ICoupleResponse) => <>{item.time}</>,
   (item: ICoupleResponse) => <>{Number(item.average_rating).toFixed(2)}</>,
-  (item: ICoupleResponse) => <LinkButton to={`/admin/couples/review/${item.id}`} text='Перейти' width={180} />
+  (item: ICoupleResponse) => <LinkButton to={`/admin/couples/review/${item.id}`} text='Перейти' width={180} />,
+  (item: ICoupleResponse) => <LinkButton to={`/admin/couples/statistics/${item.id}?course=${item.course}`} text='Перейти' width={180} />
 ];

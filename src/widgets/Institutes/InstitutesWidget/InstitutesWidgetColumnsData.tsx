@@ -17,9 +17,9 @@ export const headerLabels = [
 
 export const renderCels = [
   (item: IInstituteResponse) => <LinkButton to={`/admin/institutes/edit/${item.id}`} text='Редактировать' width={240} />,
+  (item: IInstituteResponse) => <>{item.abbreviation}</>,
   (item: IInstituteResponse) => <>{item.name}</>,
-  (item: IInstituteResponse) => <>{item.name}</>,
-  (item: IInstituteResponse) => <>{item.name}</>,
+  (item: IInstituteResponse) => <>{item.address}</>,
   (item: IInstituteResponse) => <>{item.rating}</>,
   (item: IInstituteResponse) => <LinkButton to={`/admin/courses/${item.id}`} text='Перейти' width={180} />
 ];

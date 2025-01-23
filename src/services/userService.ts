@@ -11,7 +11,7 @@ export type IUserRequest = {
 
 export type IUserResponse = {
   "id": string,
-  "password": string,
+  "password"?: string,
   "username": string,
   "first_name": string,
   "last_name": string,

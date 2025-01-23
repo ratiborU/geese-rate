@@ -13,6 +13,8 @@ import { useCreateInstituteMutation } from '../../../hooks/institutes/useCreateI
 
 const createUserSchema = z.object({
   name: z.string().min(1, "Это поле обязательно для заполнения"),
+  abbreviation: z.string().min(1, "Это поле обязательно для заполнения"),
+  address: z.string().min(1, "Это поле обязательно для заполнения"),
   rating: z.string()
 })
 
@@ -45,7 +47,7 @@ const CreateInstituteWidget = () => {
           label='Название инстиута'
           inputProps={{
             id: 'create-institute-name',
-            ...register('name'),
+            ...register('abbreviation'),
             type: "text",
             placeholder: 'Введите название института...',
             autoComplete: "new-password"
@@ -55,6 +57,7 @@ const CreateInstituteWidget = () => {
           label='Полное название инстиута'
           inputProps={{
             id: 'create-institute-fullname',
+            ...register('name'),
             type: "text",
             placeholder: 'Введите полное название института...',
             autoComplete: "new-password"
@@ -64,6 +67,7 @@ const CreateInstituteWidget = () => {
           label='Адрес инстиута'
           inputProps={{
             id: 'create-institute-address',
+            ...register('address'),
             type: "text",
             placeholder: 'Введите адрес института...',
             autoComplete: "new-password"

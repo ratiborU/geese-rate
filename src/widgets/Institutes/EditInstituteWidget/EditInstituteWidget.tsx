@@ -13,6 +13,8 @@ import { IInstituteResponse } from '../../../services/instituteService';
 
 const createUserSchema = z.object({
   name: z.string().min(1, "Это поле обязательно для заполнения"),
+  abbreviation: z.string().min(1, "Это поле обязательно для заполнения"),
+  address: z.string().min(1, "Это поле обязательно для заполнения"),
   rating: z.string().min(1, "Это поле обязательно для заполнения")
 
 })
@@ -56,10 +58,10 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           label='Название инстиута'
           inputProps={{
             id: 'create-institute-name',
-            ...register('name'),
+            ...register('abbreviation'),
             type: "text",
             placeholder: 'Введите название института...',
-            defaultValue: data.name,
+            defaultValue: data.abbreviation,
             autoComplete: "new-password"
           }}
         />
@@ -67,8 +69,10 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           label='Полное название инстиута'
           inputProps={{
             id: 'create-institute-fullname',
+            ...register('name'),
             type: "text",
             placeholder: 'Введите полное название института...',
+            defaultValue: data.name,
             autoComplete: "new-password"
           }}
         />
@@ -76,8 +80,10 @@ const EditInstituteWidget = (props: { data: IInstituteResponse; }) => {
           label='Адрес инстиута'
           inputProps={{
             id: 'create-institute-address',
+            ...register('address'),
             type: "text",
             placeholder: 'Введите адрес института...',
+            defaultValue: data.address,
             autoComplete: "new-password"
           }}
         />

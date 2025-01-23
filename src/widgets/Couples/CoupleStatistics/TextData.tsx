@@ -10,7 +10,6 @@ const TextData = (props: { data: IReviewResponse[] }) => {
   }, [data]);
   const csat = useMemo(() => {
     const sum = data.reduce((acc, cur) => acc + (Number(cur.rating) >= 4 ? 1 : 0), 0);
-    console.log(sum);
     return (sum / data.length * 100).toFixed(2);
   }, [data]);
   const cdsat = useMemo(() => {
