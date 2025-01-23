@@ -1,13 +1,13 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import LinkButton from '../../../components/UI/LinkButton/LinkButton';
 import Table from '../../../components/UI/Table/Table';
-import { ICoupleResponse } from "../../../services/coupleService";
 import { tableName, headerLabels, renderCels } from "./CouplesWidgetColumnData";
 import styles from "./couplesWidget.module.css"
+import { useGetCouplesCourseQuery } from '../../../hooks/couples/useGetCouplesCourse';
 
-const CouplesWidget = (props: { data: ICoupleResponse[]; }) => {
-  const { data } = props
+const CouplesWidget = () => {
   const { id } = useParams();
+  const { data, isFetching, error } = useGetCouplesCourseQuery(Number(id));
   const [searchParams] = useSearchParams();
 
   return (
@@ -21,7 +21,9 @@ const CouplesWidget = (props: { data: ICoupleResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
   );

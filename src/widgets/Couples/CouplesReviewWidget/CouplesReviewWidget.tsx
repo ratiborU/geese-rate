@@ -1,10 +1,12 @@
+import { useParams } from 'react-router-dom';
 import Table from '../../../components/UI/Table/Table';
-import { IReviewResponse } from '../../../services/reviewsService';
 import { tableName, headerLabels, renderCels } from "./CouplesReviewWidgetColumnsData";
+import { useGetReviewsCoupleQuery } from '../../../hooks/reviews/useGetReviesCouple';
 // import styles from "./couplesTeacherReviewWidget.module.css"
 
-const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
-  const { data } = props
+const CouplesReviewWidget = () => {
+  const { id } = useParams();
+  const { data, isFetching, error } = useGetReviewsCoupleQuery(Number(id));
 
   return (
     <>
@@ -12,7 +14,9 @@ const CouplesReviewWidget = (props: { data: IReviewResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
 

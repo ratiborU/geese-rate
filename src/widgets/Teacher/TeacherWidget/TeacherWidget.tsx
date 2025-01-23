@@ -1,14 +1,15 @@
-import { ICourseResponse } from "../../../services/courseService";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, renderCels } from "./TeacherWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import styles from "./teacherWidget.module.css"
 import { LocalStorageService } from "../../../lib/helpers/localStorageService";
 import { IUserResponse } from "../../../services/userService";
+import { useGetCoursesTeacherQuery } from "../../../hooks/courses/useGetCoursesTeacherQuery";
 
-const TeacherWidget = (props: { data: ICourseResponse[]; }) => {
-  const { data } = props;
-  const user: IUserResponse | null = LocalStorageService.get('user');
+const TeacherWidget = () => {
+  const user: IUserResponse = LocalStorageService.get('user')!;
+  const { data, isFetching, error } = useGetCoursesTeacherQuery(user.id);
+
   return (
     <>
       <div className={styles.buttons}>
@@ -30,7 +31,9 @@ const TeacherWidget = (props: { data: ICourseResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
 

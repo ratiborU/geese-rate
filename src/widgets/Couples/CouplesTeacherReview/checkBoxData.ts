@@ -13,7 +13,6 @@ export type IReviewResponseChecked = {
 }
 
 export const getDataWithCheckboxes = (data: IReviewResponse[]): IReviewResponseChecked[] => {
-  // console.log(data);
 
   return data.map(x => ({ ...x, checked: true }))
 }

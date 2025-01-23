@@ -14,6 +14,7 @@ export const headerLabels = [
   'Средний рейтинг',
   'Ссылка на QR',
   'Список студентов',
+  'Статистика',
 ];
 
 
@@ -22,6 +23,7 @@ export const renderCels = [
   (text: ICoupleResponse) => <>{parseDate(text.date)}, {text.time}</>,
   (text: ICoupleResponse) => <>{getCoupleStatus(text)}</>,
   (text: ICoupleResponse) => <>{Number(text.average_rating).toFixed(2)}</>,
-  (text: ICoupleResponse) => <LinkButton to={`/teacher/qr/${text.id}`} text='QR' width={240} />,
-  (text: ICoupleResponse) => <LinkButton to={`/teacher/couples/review/${text.id}?course=${text.course}`} text='Перейти' width={240} />,
+  (text: ICoupleResponse) => <LinkButton to={`/teacher/qr/${text.id}`} text='QR' width={180} />,
+  (text: ICoupleResponse) => <LinkButton to={`/teacher/couples/review/${text.id}?course=${text.course}`} text='Перейти' width={200} />,
+  (text: ICoupleResponse) => <LinkButton to={`/admin/couples/statistics/${text.id}?course=${text.course}`} text='Статистика' width={220} />,
 ];

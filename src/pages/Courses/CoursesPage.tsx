@@ -5,24 +5,12 @@ import CoursesWidget from '../../widgets/Courses/CoursesWidget/CoursesWidget';
 import { useParams } from 'react-router-dom';
 import TitleWidget from '../../widgets/TitleWidget/TitleWidget';
 import image from '../../assets/institute.png'
-// import { InstituteService } from '../../services/instituteService';
-import { useGetCoursesInstituteQuery } from '../../hooks/courses/useGetCoursesInstituteQuery';
 import { useGetOneInstituteQuery } from '../../hooks/institutes/useGetOneInstituteQuery';
 
 
 const CoursesPage = () => {
   const { id } = useParams();
-
-  const { data, isFetching, error } = useGetCoursesInstituteQuery(id || '')
-  const { data: institute, isFetching: instituteIsFetching, error: isntituteError } = useGetOneInstituteQuery(Number(id));
-
-  if (isFetching || instituteIsFetching || !data) {
-    return <>Загрузка...</>
-  }
-
-  if (error || isntituteError) {
-    return <>{error?.message} {isntituteError?.message}</>
-  }
+  const { data: institute } = useGetOneInstituteQuery(Number(id));
 
   return (
     <div>
@@ -31,7 +19,7 @@ const CoursesPage = () => {
         description={`Выберите необходимый вам предмет в ${institute?.name || ''}`}
         image={image}
       />
-      <CoursesWidget data={data} />
+      <CoursesWidget />
     </div>
   );
 };

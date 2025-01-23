@@ -20,7 +20,7 @@ const editUserSchema = z.object({
   username: z.string().min(1, "Это поле обязательно для заполнения").max(20, 'Не более 20 символов'),
   email: z.string(),
   role: z.string().min(1, "Это поле обязательно для заполнения"),
-  password: z.string().min(1, "Это поле обязательно для заполнения"),
+  password: z.string(),
 
 })
 
@@ -39,7 +39,18 @@ const EditUserWidjet = (props: { data: IUserResponse; }) => {
   const { register, handleSubmit } = useForm<TEditUserSchema>({ resolver: zodResolver(editUserSchema) });
 
   const onSubmit = async (formData: TEditUserSchema) => {
-    await updateUser({ ...formData, id: data.id } as IUserResponse);
+    if (formData.password == '') {
+      await updateUser({
+        id: data.id,
+        username: formData.username,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        role: formData.role
+      } as IUserResponse);
+    } else {
+      await updateUser({ ...formData, id: data.id } as IUserResponse);
+    }
   }
 
   const onDelete = async () => {

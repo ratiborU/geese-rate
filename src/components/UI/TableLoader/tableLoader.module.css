@@ -1,0 +1,46 @@
+.loader {
+  width: 180px;
+  height: 180px;
+
+  margin: 0 auto;
+  margin-top: 120px;
+}
+
+.circularLoader {
+  animation: rotate 2s linear infinite;
+}
+
+.loaderPath {
+  fill: none;
+  stroke: white;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  stroke-dasharray: 10, 10;
+  animation: animate-stroke 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-stroke {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    /* stroke: white; */
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+    /* stroke: white; */
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
+    /* stroke: white; */
+  }
+}

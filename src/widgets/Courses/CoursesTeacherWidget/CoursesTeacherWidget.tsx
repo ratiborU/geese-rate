@@ -1,14 +1,16 @@
-import { ICourseResponse } from "../../../services/courseService";
 import Table from "../../../components/UI/Table/Table";
 import { tableName, headerLabels, renderCels } from "./CoursesTeacherWidgetColumnsData";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
 import styles from "./coursesTeacherWidget.module.css"
 import { useParams, useSearchParams } from "react-router-dom";
+import { useGetCoursesTeacherQuery } from "../../../hooks/courses/useGetCoursesTeacherQuery";
 
-const CoursesTeacherWidget = (props: { data: ICourseResponse[]; }) => {
-  const { data } = props
+
+const CoursesTeacherWidget = () => {
   const { id } = useParams();
+  const { data, isFetching, error } = useGetCoursesTeacherQuery(id || '')
   const [searchParams] = useSearchParams();
+
   return (
     <>
       <LinkButton
@@ -20,7 +22,9 @@ const CoursesTeacherWidget = (props: { data: ICourseResponse[]; }) => {
         headerLabels={headerLabels}
         tableName={tableName}
         renderCels={renderCels}
-        data={data}
+        isFetching={isFetching}
+        error={error}
+        data={data || []}
       />
     </>
 

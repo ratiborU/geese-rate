@@ -2,12 +2,16 @@ import $https from './api';
 
 export type IInstituteRequest = {
   "name": string,
+  "abbreviation": string,
+  "address": string,
   "rating": string
 };
 
 export type IInstituteResponse = {
   "id": string,
   "name": string,
+  "abbreviation": string,
+  "address": string,
   "rating": string
 };
 

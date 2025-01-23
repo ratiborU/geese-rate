@@ -62,7 +62,6 @@ const LoginModal = (props: { isVisible: boolean; change: (state: boolean) => voi
   }
 
   const onError = (error: Error) => {
-    console.log('error');
     notifyError(error.message)
   }
 
